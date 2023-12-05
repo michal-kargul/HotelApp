@@ -14,7 +14,7 @@ public:
 
     Menu(std::initializer_list<std::string> stringsMenu) {
         for (auto str : stringsMenu) {
-            stringsMenu_.push_back(str);
+            createdMenu.push_back(str);
         }
     }
 
@@ -26,5 +26,5 @@ public:
 
 private:
     void printMenu(int selected);
-    std::vector<std::string> stringsMenu_;
+    std::vector<std::string> createdMenu;
 };

@@ -19,7 +19,7 @@ int Menu::menu() {
             }
             break;
         case KEY_DOWN:
-            if (selected < stringsMenu_.size() - 1) {
+            if (selected < createdMenu.size() - 1) {
                 ++selected;
                 system("cls");
                 updated = true;
@@ -44,8 +44,8 @@ int Menu::menu() {
 void Menu::printMenu(int selected) {
     int index = 0;
 
-    for (int i = 0; i < stringsMenu_.size(); ++i) {
-        std::cout << stringsMenu_[i];
+    for (int i = 0; i < createdMenu.size(); ++i) {
+        std::cout << createdMenu[i];
 
         if (selected == i)
             std::cout << " <--" << std::endl;
