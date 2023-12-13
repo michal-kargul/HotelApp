@@ -1,5 +1,12 @@
 #include "Room.h"
 
+Room::Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable) {
+    this->roomNumber = roomNumber;
+    this->capacity = capacity;
+    this->pricePerNight = pricePerNight;
+    this->available = isAvailable;
+}
+
 int Room::getRoomNumber() {
     return roomNumber;
 }

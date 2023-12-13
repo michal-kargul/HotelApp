@@ -3,28 +3,21 @@
 
 class Client {
 public:
-    Client(std::string name, std::string surname, std::string email, std::string phoneNumber, std::string peselID) {
-        this->name = name;
-        this->surname = surname;
-        this->email = email;
-        this->phoneNumber = phoneNumber;
-        this->peselID = peselID;
-    }
+    Client(const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID);
 
-    std::string getName();
-    void setName(std::string name);
+    const std::string& getName() const;
+    void setName(const std::string& name);
 
-    std::string getSurname();
-    void setSurname(std::string surname);
+    const std::string& getSurname() const;
+    void setSurname(const std::string& surname);
 
-    std::string getEmail();
-    void setEmail(std::string email);
+    const std::string& getEmail() const;
+    void setEmail(const std::string& email);
 
-    std::string getPhoneNumber();
-    void setPhoneNumber(std::string phoneNumber);
+    const std::string& getPhoneNumber() const;
+    void setPhoneNumber(const std::string& phoneNumber);
 
-    std::string getPeselID();
-    void setPeselID(std::string peselID);
+    const std::string& getPeselID() const;
 
 private:
     std::string name;

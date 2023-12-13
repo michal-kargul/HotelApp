@@ -1,14 +1,8 @@
 #pragma once
-#include <string>
 
 class Room {
 public:
-    Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable) {
-        this->roomNumber = roomNumber;
-        this->capacity = capacity;
-        this->pricePerNight = pricePerNight;
-        this->available = isAvailable;
-    }
+    Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable);
 
     int getRoomNumber();
     void setRoomNumber(int roomNumber);

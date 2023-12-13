@@ -3,6 +3,12 @@
 #include <string>
 #include "Menu.h"
 
+Menu::Menu (std::initializer_list<std::string> stringsMenu) {
+    for (auto str : stringsMenu) {
+        createdMenu.push_back(str);
+    }
+}
+
 int Menu::menu() {
 
     Menu::printMenu(selected);

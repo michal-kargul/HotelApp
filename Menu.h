@@ -12,11 +12,7 @@
 class Menu {
 public:
 
-    Menu(std::initializer_list<std::string> stringsMenu) {
-        for (auto str : stringsMenu) {
-            createdMenu.push_back(str);
-        }
-    }
+    Menu(std::initializer_list<std::string> stringsMenu);
 
     int selected = 0;
     bool selecting = true;
