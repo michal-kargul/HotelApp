@@ -4,15 +4,25 @@
 #include <string>
 #include <vector>
 
-
 #define KEY_UP 72
 #define KEY_DOWN 80
 #define KEY_ENTER '\r'
 
-class Menu {
-public:
+enum MenuOptions
+{
+    rooms,
+    clients,
+    reservations,
+    book,
+    addUser,
+    addRoom,
+    stop,
+};
 
-    Menu(std::initializer_list<std::string> stringsMenu);
+class Menu
+{
+public:
+    Menu();
 
     int selected = 0;
     bool selecting = true;
@@ -23,4 +33,5 @@ public:
 private:
     void printMenu(int selected);
     std::vector<std::string> createdMenu;
+
 };

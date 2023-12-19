@@ -1,31 +1,41 @@
-#include <iostream>
-#include <conio.h> 
-#include <string>
 #include "Menu.h"
+#include <iostream>
+#include <conio.h>
+#include <string>
 
-Menu::Menu (std::initializer_list<std::string> stringsMenu) {
-    for (auto str : stringsMenu) {
-        createdMenu.push_back(str);
-    }
+Menu::Menu()
+{
+    createdMenu =
+    {
+        "Pokoje",
+        "Klienci",
+        "Rezerwacje",
+        "Rezerwuj",
+        "Dodaj Klienta",
+        "Dodaj Pokoj",
+        "Wyjdz"
+    };
 }
 
-int Menu::menu() {
-
+int Menu::menu()
+{
     Menu::printMenu(selected);
 
     char c;
     while (selecting) {
-
-        switch ((c = _getch())) {
+        switch ((c = _getch()))
+        {
         case KEY_UP:
-            if (selected > 0) {
+            if (selected > 0)
+            {
                 --selected;
                 system("cls");
                 updated = true;
             }
             break;
         case KEY_DOWN:
-            if (selected < createdMenu.size() - 1) {
+            if (selected < createdMenu.size() - 1)
+            {
                 ++selected;
                 system("cls");
                 updated = true;
@@ -40,18 +50,18 @@ int Menu::menu() {
             printMenu(selected);
             updated = false;
         }
-
     }
     system("cls");
-
-    return (selected + 1);
+    return static_cast<MenuOptions>(selected);
 }
 
-void Menu::printMenu(int selected) {
+void Menu::printMenu(int selected)
+{
     int index = 0;
-
-    for (int i = 0; i < createdMenu.size(); ++i) {
-        std::cout << createdMenu[i];
+    system("cls");
+    for (int i = 0; i < createdMenu.size(); ++i)
+    {
+        std::cout << i+1 << ". " << createdMenu[i];
 
         if (selected == i)
             std::cout << " <--" << std::endl;

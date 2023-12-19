@@ -1,6 +1,7 @@
 #pragma once
 
-class Room {
+class Room
+{
 public:
     Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable);
 

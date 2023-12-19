@@ -1,10 +1,12 @@
+#include "Room.h"
+#include "Client.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "Room.h"
-#include "Client.h"
 
-class HotelManager {
+
+class HotelManager
+{
 public:
 
     void AddClient(const Client& client);

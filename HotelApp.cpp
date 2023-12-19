@@ -4,18 +4,42 @@
 
 int main() {
 
-   // Menu m1 = { "1. Pokoje" , "2. Rezerwacje", "3. Rezerwuj" , "4. Rejestruj", "5. Wyjdz", "6. Test"};
+    Menu m1;
 
-    //std::cout << m1.menu();
+    bool exit = false;
 
-    HotelManager hotelManager;
-
-    Client client1("Michal2", "Kargul", "michal@test.com", "123456789", "1234567890");
-    Client client2("TestMK13", "Testmk2Surn", "test@test.com", "555666444", "1112222333344");
-    hotelManager.AddClient(client1);
-    hotelManager.AddClient(client2);
-
-    hotelManager.SaveClientsToCSV("clients.csv");
+    do
+    {
+        switch (m1.menu())
+        {
+        case MenuOptions::rooms:
+            std::cout << "PokojeTest" << std::endl;
+            break;
+        case MenuOptions::clients:
+            std::cout << "KlienciTest" << std::endl;
+            break;
+        case MenuOptions::reservations:
+            std::cout << "RezerwacjeTest" << std::endl;
+            break;
+        case MenuOptions::book:
+            std::cout << "RezerwujTest" << std::endl;
+            break;
+        case MenuOptions::addUser:
+            std::cout << "DodajKlientaTest" << std::endl;
+            break;
+        case MenuOptions::addRoom:
+            std::cout << "DodajPokojTest" << std::endl;
+            break;
+        case MenuOptions::stop:
+            exit = true;
+            break;
+        default:
+            std::cout << "Error" << std::endl;
+            break;
+        }
+        system("pause");
+        m1.selecting = true;
+    } while (exit != true);
 
     return 0;
 }

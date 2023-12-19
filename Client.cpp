@@ -1,6 +1,7 @@
 #include "Client.h"
 
-Client::Client(const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID) {
+Client::Client(const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID)
+{
     this->name = name;
     this->surname = surname;
     this->email = email;
@@ -8,38 +9,47 @@ Client::Client(const std::string& name, const std::string& surname, const std::s
     this->peselID = peselID;
 }
 
-const std::string& Client::getName() const {
+const std::string& Client::getName() const
+{
     return name;
 }
 
-void Client::setName(const std::string& name) {
+void Client::setName(const std::string& name)
+{
     this->name = name;
 }
 
-const std::string& Client::getSurname() const {
+const std::string& Client::getSurname() const
+{
     return surname;
 }
 
-void Client::setSurname(const std::string& surname) {
+void Client::setSurname(const std::string& surname)
+{
     this->surname = surname;
 }
 
-const std::string& Client::getEmail() const {
+const std::string& Client::getEmail() const
+{
     return email;
 }
 
-void Client::setEmail(const std::string& email) {
+void Client::setEmail(const std::string& email)
+{
     this->email = email;
 }
 
-const std::string& Client::getPhoneNumber() const {
+const std::string& Client::getPhoneNumber() const
+{
     return phoneNumber;
 }
 
-void Client::setPhoneNumber(const std::string& phoneNumber) {
+void Client::setPhoneNumber(const std::string& phoneNumber)
+{
     this->phoneNumber = phoneNumber;
 }
 
-const std::string& Client::getPeselID() const {
+const std::string& Client::getPeselID() const
+{
     return peselID;
 }
