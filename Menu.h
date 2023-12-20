@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <conio.h>
 
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -10,13 +11,13 @@
 
 enum MenuOptions
 {
-    rooms,
-    clients,
-    reservations,
-    book,
-    addUser,
-    addRoom,
-    stop,
+    Rooms,
+    Clients,
+    Reservations,
+    Book,
+    AddClient,
+    AddRoom,
+    Stop,
 };
 
 class Menu

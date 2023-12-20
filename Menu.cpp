@@ -1,7 +1,4 @@
 #include "Menu.h"
-#include <iostream>
-#include <conio.h>
-#include <string>
 
 Menu::Menu()
 {

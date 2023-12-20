@@ -5,16 +5,16 @@ class Room
 public:
     Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable);
 
-    int getRoomNumber();
+    int& getRoomNumber();
     void setRoomNumber(int roomNumber);
 
-    int getCapacity();
+    int& getCapacity();
     void setCapacity(int capacity);
 
-    double getPricePerNight();
+    double& getPricePerNight();
     void setPricePerNight(double price);
 
-    bool isAvailable();
+    bool& isAvailable();
     void setAvailability(bool available);
 
 private:

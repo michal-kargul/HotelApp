@@ -3,16 +3,19 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <conio.h>
 
 
 class HotelManager
 {
 public:
 
-    void AddClient(const Client& client);
-
-    void SaveClientsToCSV(const std::string& filename);
+    void AddClient();
+    void ReadClientsFromCSV();
 
 private:
+    void AddClientFromConsole();
+    void SaveClientsToCSV();
     std::vector<Client> clients;
+    const std::string filenameClient = "clients.csv";
 };

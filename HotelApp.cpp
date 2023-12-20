@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include "HotelManager.h"
-#include "Client.h"
 
 int main() {
 
@@ -8,35 +7,38 @@ int main() {
 
     bool exit = false;
 
+    HotelManager hotel;
+
     do
     {
         switch (m1.menu())
         {
-        case MenuOptions::rooms:
+        case MenuOptions::Rooms:
             std::cout << "PokojeTest" << std::endl;
             break;
-        case MenuOptions::clients:
-            std::cout << "KlienciTest" << std::endl;
+        case MenuOptions::Clients:
+            hotel.ReadClientsFromCSV();
             break;
-        case MenuOptions::reservations:
+        case MenuOptions::Reservations:
             std::cout << "RezerwacjeTest" << std::endl;
             break;
-        case MenuOptions::book:
+        case MenuOptions::Book:
             std::cout << "RezerwujTest" << std::endl;
             break;
-        case MenuOptions::addUser:
-            std::cout << "DodajKlientaTest" << std::endl;
+        case MenuOptions::AddClient:
+            hotel.AddClient();
             break;
-        case MenuOptions::addRoom:
+        case MenuOptions::AddRoom:
             std::cout << "DodajPokojTest" << std::endl;
             break;
-        case MenuOptions::stop:
+        case MenuOptions::Stop:
             exit = true;
             break;
         default:
             std::cout << "Error" << std::endl;
             break;
         }
+
         system("pause");
         m1.selecting = true;
     } while (exit != true);
