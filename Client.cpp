@@ -1,6 +1,13 @@
 #include "Client.h"
 
-Client::Client(const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID) : name(name), surname(surname), email(email), phoneNumber(phoneNumber), peselID(peselID) {}
+Client::Client(const int& id, const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID)
+    : id(id), name(name), surname(surname), email(email), phoneNumber(phoneNumber), peselID(peselID) 
+{}
+
+const int& Client::getID() const
+{
+    return id;
+}
 
 const std::string& Client::getName() const
 {

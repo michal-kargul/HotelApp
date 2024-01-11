@@ -30,6 +30,9 @@
     <ClCompile Include="HotelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Reservation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -44,9 +47,18 @@
     <ClInclude Include="HotelManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Reservation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="clients.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="rooms.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="reservations.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

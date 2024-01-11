@@ -4,7 +4,9 @@
 class Client
 {
 public:
-    Client(const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID);
+    Client(const int& id, const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID);
+
+    const int& getID() const;
 
     const std::string& getName() const;
     void setName(const std::string& name);
@@ -21,6 +23,7 @@ public:
     const std::string& getPeselID() const;
 
 private:
+    int id;
     std::string name;
     std::string surname;
     std::string email;

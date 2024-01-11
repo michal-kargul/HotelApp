@@ -2,21 +2,22 @@
 
 Menu::Menu()
 {
-    createdMenu =
-    {
-        "Pokoje",
-        "Klienci",
-        "Rezerwacje",
-        "Rezerwuj",
-        "Dodaj Klienta",
-        "Dodaj Pokoj",
-        "Wyjdz"
+    menuMapPL = {
+        {MenuOption::Rooms, "Pokoje"},
+        {MenuOption::Clients, "Klienci"},
+        {MenuOption::Reservations, "Rezerwacje"},
+        {MenuOption::Book, "Rezerwuj"},
+        {MenuOption::AddClient, "Dodaj Klienta"},
+        {MenuOption::AddRoom, "Dodaj Pokoj"},
+        {MenuOption::Stop, "Wyjdz"}
     };
 }
 
-int Menu::menu()
+MenuOption Menu::GetUserInput()
 {
     Menu::printMenu(selected);
+
+    selecting = true;
 
     char c;
     while (selecting) {
@@ -31,7 +32,7 @@ int Menu::menu()
             }
             break;
         case KEY_DOWN:
-            if (selected < createdMenu.size() - 1)
+            if (selected < menuMapPL.size() - 1)
             {
                 ++selected;
                 system("cls");
@@ -49,20 +50,20 @@ int Menu::menu()
         }
     }
     system("cls");
-    return static_cast<MenuOptions>(selected);
+    return static_cast<MenuOption>(selected);
 }
 
 void Menu::printMenu(int selected)
 {
-    int index = 0;
     system("cls");
-    for (int i = 0; i < createdMenu.size(); ++i)
+    for (const auto& pair : menuMapPL)
     {
-        std::cout << i+1 << ". " << createdMenu[i];
+        std::cout << pair.first + 1 << ". " << pair.second;
 
-        if (selected == i)
+        if (selected == static_cast<int>(pair.first))
             std::cout << " <--" << std::endl;
         else
             std::cout << std::endl;
+
     }
 }

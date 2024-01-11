@@ -1,19 +1,16 @@
 #include "Room.h"
 
-Room::Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable) : roomNumber(roomNumber), capacity(capacity), pricePerNight(pricePerNight), available(isAvailable) {}
+Room::Room(int roomID, int capacity, double pricePerNight, bool isAvailable)
+    : roomID(roomID), capacity(capacity), pricePerNight(pricePerNight), available(isAvailable)
+{}
 
 
-int& Room::getRoomNumber()
+const int& Room::getRoomID() const
 {
-    return roomNumber;
+    return roomID;
 }
 
-void Room::setRoomNumber(int roomNumber)
-{
-    this->roomNumber = roomNumber;
-}
-
-int& Room::getCapacity()
+const int& Room::getCapacity() const
 {
     return capacity;
 }
@@ -23,7 +20,7 @@ void Room::setCapacity(int capacity)
     this->capacity = capacity;
 }
 
-double& Room::getPricePerNight()
+const double& Room::getPricePerNight() const
 {
     return pricePerNight;
 }
@@ -33,7 +30,7 @@ void Room::setPricePerNight(double price)
     pricePerNight = price;
 }
 
-bool& Room::isAvailable()
+const bool& Room::isAvailable() const
 {
     return available;
 }

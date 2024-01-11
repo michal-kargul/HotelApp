@@ -3,22 +3,21 @@
 class Room
 {
 public:
-    Room(int roomNumber, int capacity, double pricePerNight, bool isAvailable);
+    Room(int roomID, int capacity, double pricePerNight, bool isAvailable);
 
-    int& getRoomNumber();
-    void setRoomNumber(int roomNumber);
+    const int& getRoomID() const;
 
-    int& getCapacity();
+    const int& getCapacity() const;
     void setCapacity(int capacity);
 
-    double& getPricePerNight();
+    const double& getPricePerNight() const;
     void setPricePerNight(double price);
 
-    bool& isAvailable();
+    const bool& isAvailable() const;
     void setAvailability(bool available);
 
 private:
-    int roomNumber;
+    int roomID;
     int capacity;
     double pricePerNight;
     bool available;
