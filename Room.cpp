@@ -5,12 +5,12 @@ Room::Room(int roomID, int capacity, double pricePerNight, bool isAvailable)
 {}
 
 
-const int& Room::getRoomID() const
+const int Room::getRoomID() const
 {
     return roomID;
 }
 
-const int& Room::getCapacity() const
+const int Room::getCapacity() const
 {
     return capacity;
 }
@@ -20,7 +20,7 @@ void Room::setCapacity(int capacity)
     this->capacity = capacity;
 }
 
-const double& Room::getPricePerNight() const
+const double Room::getPricePerNight() const
 {
     return pricePerNight;
 }
@@ -30,7 +30,7 @@ void Room::setPricePerNight(double price)
     pricePerNight = price;
 }
 
-const bool& Room::isAvailable() const
+const bool Room::isAvailable() const
 {
     return available;
 }

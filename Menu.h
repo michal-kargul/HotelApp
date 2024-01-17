@@ -27,10 +27,10 @@ public:
     MenuOption GetUserInput();
 
 private:
-    int selected = 0;
+    MenuOption selected = MenuOption::Rooms;
     bool selecting = true;
     bool updated = false;
-    void printMenu(int selected);
+    void printMenu(MenuOption selected);
     std::map<MenuOption, std::string> menuMapPL;
 
 };

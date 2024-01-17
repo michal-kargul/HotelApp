@@ -4,7 +4,7 @@ Client::Client(const int& id, const std::string& name, const std::string& surnam
     : id(id), name(name), surname(surname), email(email), phoneNumber(phoneNumber), peselID(peselID) 
 {}
 
-const int& Client::getID() const
+const int Client::getID() const
 {
     return id;
 }

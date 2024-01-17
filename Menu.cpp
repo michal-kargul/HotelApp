@@ -26,7 +26,7 @@ MenuOption Menu::GetUserInput()
         case KEY_UP:
             if (selected > 0)
             {
-                --selected;
+                selected = static_cast<MenuOption>(static_cast<int>(selected) - 1);
                 system("cls");
                 updated = true;
             }
@@ -34,7 +34,7 @@ MenuOption Menu::GetUserInput()
         case KEY_DOWN:
             if (selected < menuMapPL.size() - 1)
             {
-                ++selected;
+                selected = static_cast<MenuOption>(static_cast<int>(selected) + 1);
                 system("cls");
                 updated = true;
             }
@@ -53,7 +53,7 @@ MenuOption Menu::GetUserInput()
     return static_cast<MenuOption>(selected);
 }
 
-void Menu::printMenu(int selected)
+void Menu::printMenu(MenuOption selected)
 {
     system("cls");
     for (const auto& pair : menuMapPL)

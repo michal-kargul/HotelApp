@@ -6,7 +6,7 @@ class Client
 public:
     Client(const int& id, const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID);
 
-    const int& getID() const;
+    const int getID() const;
 
     const std::string& getName() const;
     void setName(const std::string& name);

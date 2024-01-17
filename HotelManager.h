@@ -1,5 +1,6 @@
 #include "Room.h"
 #include "Client.h"
+#include "Reservation.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -17,6 +18,8 @@ public:
     void AddRoom();
     void PrintRooms();
     void ReadRoomsFromCSV();
+    void AddReservation();
+    void AddReservationFromConsole();
 
 private:
     void AddClientFromConsole();
@@ -27,4 +30,5 @@ private:
     void SaveRoomsToCSV();
     std::vector<Room> rooms;
     const std::string filenameRoom = "rooms.csv";
+    std::vector<Reservation> reservations;
 };

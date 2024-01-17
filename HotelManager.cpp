@@ -1,6 +1,7 @@
 #include "HotelManager.h"
 
-void HotelManager::AddClient() {
+void HotelManager::AddClient()
+{
     char c;
 
     do
@@ -15,7 +16,8 @@ void HotelManager::AddClient() {
     HotelManager::SaveClientsToCSV();
 }
 
-void HotelManager::AddClientFromConsole() {
+void HotelManager::AddClientFromConsole()
+{
     int id;
     int i = 0;
     std::string name;
@@ -27,7 +29,8 @@ void HotelManager::AddClientFromConsole() {
 
     do
     {
-        if (clients.empty() && i == 0) {
+        if (clients.empty() && i == 0)
+        {
             HotelManager::ReadClientsFromCSV();
         }
         else if (clients.empty() && i != 0)
@@ -163,7 +166,8 @@ void HotelManager::PrintClients()
     
 }
 
-void HotelManager::AddRoom() {
+void HotelManager::AddRoom()
+{
     char c;
 
     do
@@ -178,7 +182,8 @@ void HotelManager::AddRoom() {
     HotelManager::SaveRoomsToCSV();
 }
 // TODO: Walidacja + wziecie pod uwage wiekszej ilosci pokoi na pietro niz 99.
-void HotelManager::AddRoomFromConsole() {
+void HotelManager::AddRoomFromConsole()
+{
     int id;
     int lastFloorID;
     int i = 0;
@@ -195,7 +200,8 @@ void HotelManager::AddRoomFromConsole() {
 
     do
     {
-        if (rooms.empty() && i == 0) {
+        if (rooms.empty() && i == 0)
+        {
             HotelManager::ReadRoomsFromCSV();
         }
         else if (rooms.empty() && i != 0)
