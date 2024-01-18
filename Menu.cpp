@@ -2,7 +2,8 @@
 
 Menu::Menu()
 {
-    menuMapPL = {
+    menuMapPL =
+    {
         {MenuOption::Rooms, "Pokoje"},
         {MenuOption::Clients, "Klienci"},
         {MenuOption::Reservations, "Rezerwacje"},
@@ -20,7 +21,8 @@ MenuOption Menu::GetUserInput()
     selecting = true;
 
     char c;
-    while (selecting) {
+    while (selecting)
+    {
         switch ((c = _getch()))
         {
         case KEY_UP:

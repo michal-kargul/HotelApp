@@ -106,7 +106,7 @@ void HotelManager::SaveClientsToCSV()
     }
 }
 
-void HotelManager::ReadClientsFromCSV() // w sumie mo¿na po³¹czyæ z funkcj¹ ReadRoomsFromCSV, dodaæ parametr na co ma patrzeæ i oprzeæ logikê funkcji na tym parametrze: Klient lub Pokoj
+void HotelManager::ReadClientsFromCSV() // w sumie mo¿na polaczyc z funkcj¹ ReadRoomsFromCSV, dodac parametr na co ma patrzec i oprzec logike funkcji na tym parametrze: Klient lub Pokoj
 {
     std::ifstream file(filenameClient);
     clients.clear();
@@ -119,9 +119,9 @@ void HotelManager::ReadClientsFromCSV() // w sumie mo¿na po³¹czyæ z funkcj¹ Read
         while (std::getline(file, line)){
                 std::vector<std::string> cells;
                 
-                //Próbowa³em zastosowaæ tutaj (std::getline(file, line, ',')), lecz w plikach csv znajduje siê jeszcze znak '\n', który trochê niszczy dzia³anie tej pêtli.
-                //Mo¿na zastosowaæ tutaj (std::getline(file, line, ',')), lecz wtedy prawdopodobnie operacje na stringu s¹ nieuniknione (wiele to nie zmieni).
-                //Uwa¿am, ¿e w tej chwili to rozwi¹zanie nie jest z³e.
+                //Probowalem zastosowac tutaj (std::getline(file, line, ',')), lecz w plikach csv znajduje sie jeszcze znak '\n', ktory troche niszczy dzialanie tej petli.
+                //Mozna zastosowac tutaj (std::getline(file, line, ',')), lecz wtedy prawdopodobnie operacje na stringu sa nieuniknione (wiele to nie zmieni).
+                //Uwazam, ze w tej chwili to rozwiazanie nie jest zle.
 
                 while ((pos = line.find(",")) != std::string::npos)
                 {
@@ -148,20 +148,16 @@ void HotelManager::ReadClientsFromCSV() // w sumie mo¿na po³¹czyæ z funkcj¹ Read
 
 void HotelManager::PrintClients()
 {
-    if (clients.empty()) {
+    if (clients.empty())
+    {
         HotelManager::ReadClientsFromCSV();
     }
 
+    std::cout << std::left << std::setw(4) << "ID" << std::setw(15) << "Imie" << std::setw(15) << "Nazwisko" << std::setw(20) << "Email" << std::setw(15) << "Nr telefonu" << std::setw(15) << "Pesel" << "\n";
+
     for (const auto& client : clients)
     {
-        std::cout << "ID: " << client.getID() << std::endl;
-        std::cout << "Imie: " << client.getName() << std::endl;
-        std::cout << "Nazwisko: " << client.getSurname() << std::endl;
-        std::cout << "Email: " << client.getEmail() << std::endl;
-        std::cout << "Numer telefonu: " << client.getPhoneNumber() << std::endl;
-        std::cout << "Pesel: " << client.getPeselID() << std::endl;
-        std::cout << "==================================================" << std::endl;
-                
+        std::cout << std::setw(4) << client.getID() << std::setw(15) << client.getName() << std::setw(15) << client.getSurname() << std::setw(20) << client.getEmail() << std::setw(15) << client.getPhoneNumber() << std::setw(15) << client.getPeselID() << "\n";
     }
     
 }
@@ -208,7 +204,8 @@ void HotelManager::AddRoomFromConsole()
         {
             id = 1+(floor*100);
         }
-        else {
+        else
+        {
             for (const auto& room : rooms)
             {
                 if ((room.getRoomID() > (floor * 100) && room.getRoomID() < ((floor * 100) + 100)) || (floor == 0 && room.getRoomID() > 0 && room.getRoomID() < 100))
@@ -308,18 +305,16 @@ void HotelManager::ReadRoomsFromCSV()
 
 void HotelManager::PrintRooms()
 {
-    if (rooms.empty()) {
+    if (rooms.empty())
+    {
         HotelManager::ReadRoomsFromCSV();
     }
 
+    std::cout << std::left << std::setw(15) << "Numer pokoju" << std::setw(10) << "Pojemnosc" << std::setw(15) << "Cena za noc" << std::setw(10) << "Dostepnosc" << "\n";
+
     for (const auto& room : rooms)
     {
-        std::cout << "Numer pokoju: " << room.getRoomID() << std::endl;
-        std::cout << "Pojemnosc: " << room.getCapacity() << std::endl;
-        std::cout << "Cena za noc: " << room.getPricePerNight() << std::endl;
-        std::cout << "Dostepnosc: " << room.isAvailable() << std::endl;
-        std::cout << "==================================================" << std::endl;
-
+        std::cout << std::setw(15) << room.getRoomID() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
     }
 
 }
