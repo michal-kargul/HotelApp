@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "Reservation.h"
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 #include <fstream>
 #include <vector>
@@ -15,10 +16,9 @@ public:
 
     void AddClient();
     void PrintClients();
-    void ReadClientsFromCSV();
+    void ReadFromCSV(const std::string& whatToRead);
     void AddRoom();
     void PrintRooms();
-    void ReadRoomsFromCSV();
     void AddReservation();
     void AddReservationFromConsole();
 

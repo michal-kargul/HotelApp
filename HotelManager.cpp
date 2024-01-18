@@ -31,7 +31,7 @@ void HotelManager::AddClientFromConsole()
     {
         if (clients.empty() && i == 0)
         {
-            HotelManager::ReadClientsFromCSV();
+            HotelManager::ReadFromCSV("clients");
         }
         else if (clients.empty() && i != 0)
         {
@@ -41,7 +41,7 @@ void HotelManager::AddClientFromConsole()
             const auto& lastClient = clients.back();
             id = lastClient.getID() + 1;
         }
-        i++;
+        ++i;
     } while (i == 1);
 
     std::cout << "Podaj imie klienta: ";
@@ -106,34 +106,49 @@ void HotelManager::SaveClientsToCSV()
     }
 }
 
-void HotelManager::ReadClientsFromCSV() // w sumie mo¿na polaczyc z funkcj¹ ReadRoomsFromCSV, dodac parametr na co ma patrzec i oprzec logike funkcji na tym parametrze: Klient lub Pokoj
+
+void HotelManager::ReadFromCSV(const std::string& whatToRead)
 {
-    std::ifstream file(filenameClient);
-    clients.clear();
+    std::string fileName;
+
+    if (whatToRead == "clients")
+    {
+        fileName = filenameClient;
+        clients.clear();
+    }
+    else if (whatToRead == "rooms")
+    {
+        fileName = filenameRoom;
+        rooms.clear();
+    }
+
+    std::ifstream file(fileName);
 
     if (file.is_open())
     {
         std::string line;
+        std::string cell;
         size_t pos = 0;
 
-        while (std::getline(file, line)){
-                std::vector<std::string> cells;
-                
-                //Probowalem zastosowac tutaj (std::getline(file, line, ',')), lecz w plikach csv znajduje sie jeszcze znak '\n', ktory troche niszczy dzialanie tej petli.
-                //Mozna zastosowac tutaj (std::getline(file, line, ',')), lecz wtedy prawdopodobnie operacje na stringu sa nieuniknione (wiele to nie zmieni).
-                //Uwazam, ze w tej chwili to rozwiazanie nie jest zle.
-
-                while ((pos = line.find(",")) != std::string::npos)
-                {
-                    std::string cell = line.substr(0, pos);
-                    cells.push_back(cell);
-                    line.erase(0, pos + 1);
-                }
-                cells.push_back(line);
-
+        while (std::getline(file, line, '\n'))
+        {
+            std::vector<std::string> cells;
+            std::istringstream lineStream(line);
+            while (std::getline(lineStream, cell, ','))
+            {
+                cells.push_back(cell);
+            }
+            if (whatToRead == "clients")
+            {
                 Client clientFromCSV(stoi(cells[0]), cells[1], cells[2], cells[3], cells[4], cells[5]);
                 clients.push_back(clientFromCSV);
-
+            }
+            else if (whatToRead == "rooms")
+            {
+                Room roomFromCSV(stoi(cells[0]), cells[1], stoi(cells[2]), std::stod(cells[3]), cells[4] == "1");
+                rooms.push_back(roomFromCSV);
+            }
+           
         }
 
         file.close();
@@ -143,14 +158,14 @@ void HotelManager::ReadClientsFromCSV() // w sumie mo¿na polaczyc z funkcj¹ Read
     {
         std::cerr << "Error while opening file: " << filenameClient << std::endl;
     }
-    
+
 }
 
 void HotelManager::PrintClients()
 {
     if (clients.empty())
     {
-        HotelManager::ReadClientsFromCSV();
+        HotelManager::ReadFromCSV("clients");
     }
 
     std::cout << std::left << std::setw(4) << "ID" << std::setw(15) << "Imie" << std::setw(15) << "Nazwisko" << std::setw(20) << "Email" << std::setw(15) << "Nr telefonu" << std::setw(15) << "Pesel" << "\n";
@@ -177,7 +192,7 @@ void HotelManager::AddRoom()
 
     HotelManager::SaveRoomsToCSV();
 }
-// TODO: Walidacja + wziecie pod uwage wiekszej ilosci pokoi na pietro niz 99.
+// TODO: Walidacja
 void HotelManager::AddRoomFromConsole()
 {
     int id;
@@ -188,6 +203,7 @@ void HotelManager::AddRoomFromConsole()
     double pricePerNight;
     bool available;
     char c;
+    std::string roomNumber;
 
     std::cout << "Podaj pietro: ";
     std::cin >> floor;
@@ -198,27 +214,26 @@ void HotelManager::AddRoomFromConsole()
     {
         if (rooms.empty() && i == 0)
         {
-            HotelManager::ReadRoomsFromCSV();
+            HotelManager::ReadFromCSV("rooms");
         }
         else if (rooms.empty() && i != 0)
         {
-            id = 1+(floor*100);
+            id = 1;
         }
-        else
-        {
-            for (const auto& room : rooms)
-            {
-                if ((room.getRoomID() > (floor * 100) && room.getRoomID() < ((floor * 100) + 100)) || (floor == 0 && room.getRoomID() > 0 && room.getRoomID() < 100))
-                {   
-                    if (lastFloorID < room.getRoomID())
-                    lastFloorID = room.getRoomID();
-                }
-            }
-
-            id = lastFloorID + 1;
+        else {
+            const auto& lastRoom = rooms.back();
+            id = lastRoom.getRoomID() + 1;
         }
-        i++;
+        ++i;
     } while (i == 1);
+
+    for (const auto& room : rooms)
+    {
+        std::cout << std::setw(15) << room.getRoomID() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
+    }
+
+    std::cout << "Podaj numer pokoju: ";
+    std::cin >> roomNumber;
 
     std::cout << "Podaj ilosc osob mieszczacych sie w pokoju: ";
     std::cin >> capacity;
@@ -242,7 +257,7 @@ void HotelManager::AddRoomFromConsole()
         }
     } while (c != 'n' && c != 'y');
 
-    Room newRoom(id, capacity, pricePerNight, available);
+    Room newRoom(id, roomNumber, capacity, pricePerNight, available);
     rooms.push_back(newRoom);
 }
 
@@ -255,7 +270,7 @@ void HotelManager::SaveRoomsToCSV()
     {
         for (const auto& room : rooms)
         {
-            file << room.getRoomID() << "," << room.getCapacity() << "," << room.getPricePerNight() << "," << room.isAvailable() << "\n";
+            file << room.getRoomID() << "," << room.getRoomNumber() << "," << room.getCapacity() << "," << room.getPricePerNight() << "," << room.isAvailable() << "\n";
         }
         file.close();
         std::cout << "Rooms data added to " << filenameRoom << std::endl;
@@ -267,54 +282,18 @@ void HotelManager::SaveRoomsToCSV()
     }
 }
 
-void HotelManager::ReadRoomsFromCSV()
-{
-    std::ifstream file(filenameRoom);
-    rooms.clear();
-
-    if (file.is_open())
-    {
-        std::string line;
-        size_t pos = 0;
-
-        while (std::getline(file, line)) {
-            std::vector<std::string> cells;
-
-            while ((pos = line.find(",")) != std::string::npos)
-            {
-                std::string cell = line.substr(0, pos);
-                cells.push_back(cell);
-                line.erase(0, pos + 1);
-            }
-            cells.push_back(line);
-
-            Room roomFromCSV(stoi(cells[0]), stoi(cells[1]), std::stod(cells[2]), cells[3] == "1");
-            rooms.push_back(roomFromCSV);
-
-        }
-
-        file.close();
-
-    }
-    else
-    {
-        std::cerr << "Error while opening file: " << filenameRoom << std::endl;
-    }
-
-}
-
 void HotelManager::PrintRooms()
 {
     if (rooms.empty())
     {
-        HotelManager::ReadRoomsFromCSV();
+        HotelManager::ReadFromCSV("rooms");
     }
 
-    std::cout << std::left << std::setw(15) << "Numer pokoju" << std::setw(10) << "Pojemnosc" << std::setw(15) << "Cena za noc" << std::setw(10) << "Dostepnosc" << "\n";
+    std::cout << std::left << std::setw(15) << "ID pokoju" << std::setw(15) << "Numer pokoju" << std::setw(10) << "Pojemnosc" << std::setw(15) << "Cena za noc" << std::setw(10) << "Dostepnosc" << "\n";
 
     for (const auto& room : rooms)
     {
-        std::cout << std::setw(15) << room.getRoomID() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
+        std::cout << std::setw(15) << room.getRoomID() << std::setw(15) << room.getRoomNumber() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
     }
 
 }
