@@ -310,7 +310,7 @@ void HotelManager::PrintRooms()
 
 }
 
-void HotelManager::PrintRooms(int date)
+void HotelManager::PrintRooms(const int date)
 {
     if (rooms.empty())
     {

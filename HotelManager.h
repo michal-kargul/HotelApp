@@ -19,7 +19,7 @@ public:
     void ReadFromCSV(const std::string& whatToRead);
     void AddRoom();
     void PrintRooms();
-    void PrintRooms(int date);
+    void PrintRooms(const int date);
     void PrintReservations();
     void AddReservation();
     void AddReservationFromConsole();
