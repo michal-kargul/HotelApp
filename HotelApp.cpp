@@ -24,10 +24,11 @@ int main() {
                 system("pause");
                 break;
             case MenuOption::Reservations:
-                std::cout << "RezerwacjeTest" << std::endl;
+                hotel.PrintReservations();
+                system("pause");
                 break;
             case MenuOption::Book:
-                std::cout << "RezerwujTest" << std::endl;
+                hotel.AddReservation();
                 break;
             case MenuOption::AddClient:
                 hotel.AddClient();

@@ -3,7 +3,7 @@
 class Reservation
 {
 public:
-    Reservation(int reservationID, int roomID, int clientID, int date, bool paid);
+    Reservation(int reservationID, int roomID, int clientID, int date, bool paid, bool status);
 
     const int& getReservationID() const;
 
@@ -17,7 +17,10 @@ public:
     void setDate(int date);
 
     const bool& isPaid() const;
-    void setPaid(bool available);
+    void setPaid(bool paid);
+
+    const bool& getStatus() const;
+    void setStatus(bool status);
 
 private:
     int reservationID;
@@ -25,4 +28,5 @@ private:
     int clientID;
     int date;
     bool paid;
+    bool status;
 };

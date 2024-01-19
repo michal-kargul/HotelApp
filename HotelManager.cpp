@@ -111,6 +111,8 @@ void HotelManager::ReadFromCSV(const std::string& whatToRead)
 {
     std::string fileName;
 
+    //TODO whatToRead zamienic na enum i else if na switch.
+
     if (whatToRead == "clients")
     {
         fileName = filenameClient;
@@ -120,6 +122,11 @@ void HotelManager::ReadFromCSV(const std::string& whatToRead)
     {
         fileName = filenameRoom;
         rooms.clear();
+    }
+    else if (whatToRead == "reservations")
+    {
+        fileName = filenameReservation;
+        reservations.clear();
     }
 
     std::ifstream file(fileName);
@@ -147,6 +154,11 @@ void HotelManager::ReadFromCSV(const std::string& whatToRead)
             {
                 Room roomFromCSV(stoi(cells[0]), cells[1], stoi(cells[2]), std::stod(cells[3]), cells[4] == "1");
                 rooms.push_back(roomFromCSV);
+            }
+            else if (whatToRead == "reservations")
+            {
+                Reservation reservationFromCSV(stoi(cells[0]), stoi(cells[1]), stoi(cells[2]), std::stoi(cells[3]), cells[4] == "1", cells[5] == "1");
+                reservations.push_back(reservationFromCSV);
             }
            
         }
@@ -294,6 +306,176 @@ void HotelManager::PrintRooms()
     for (const auto& room : rooms)
     {
         std::cout << std::setw(15) << room.getRoomID() << std::setw(15) << room.getRoomNumber() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
+    }
+
+}
+
+void HotelManager::PrintRooms(int date)
+{
+    if (rooms.empty())
+    {
+        HotelManager::ReadFromCSV("rooms");
+    }
+
+    if (reservations.empty())
+    {
+        HotelManager::ReadFromCSV("reservations");
+    }
+
+    std::cout << std::left << std::setw(15) << "ID pokoju" << std::setw(15) << "Numer pokoju" << std::setw(10) << "Pojemnosc" << std::setw(15) << "Cena za noc" << std::setw(10) << "Dostepnosc" << "\n";
+
+    for (const auto & room : rooms)
+    {
+        for (const auto& reservation : reservations)
+        {
+            if ((date != reservation.getDate()) || ((reservation.getRoomID() != room.getRoomID()) && (date == reservation.getDate())))
+            {
+                std::cout << std::setw(15) << room.getRoomID() << std::setw(15) << room.getRoomNumber() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
+            }
+        }
+    }
+    
+
+}
+
+void HotelManager::AddReservation()
+{
+    char c;
+
+    do
+    {
+        HotelManager::AddReservationFromConsole();
+
+        std::cout << std::endl << "Czy chcesz dodac kolejna rezerwacje? Nacisnij 'Y' jezeli tak, 'N' jezeli nie" << std::endl;
+        c = _getch();
+        std::cout << std::endl;
+    } while (c != 'n');
+
+    HotelManager::SaveReservationsToCSV();
+}
+
+void HotelManager::AddReservationFromConsole()
+{
+    int i = 0;
+    int date;
+    int reservationID;
+    int selectedRoomID;
+    int selectedClientID;
+    char c;
+    char paid;
+
+    do
+    {
+        if (clients.empty() && i == 0)
+        {
+            HotelManager::ReadFromCSV("clients");
+        }
+        else if (clients.empty() && i != 0)
+        {
+            HotelManager::AddClient();
+        }
+        ++i;
+    } while (i == 1);
+
+    do
+    {
+        if (rooms.empty() && i == 0)
+        {
+            HotelManager::ReadFromCSV("rooms");
+        }
+        else if (clients.empty() && i != 0)
+        {
+            HotelManager::AddRoom();
+        }
+        ++i;
+    } while (i == 1);
+
+    do
+    {
+        if (reservations.empty() && i == 0)
+        {
+            HotelManager::ReadFromCSV("reservations");
+        }
+        else if (reservations.empty() && i != 0)
+        {
+            reservationID = 1;
+        }
+        else {
+            const auto& lastReservation = reservations.back();
+            reservationID = lastReservation.getReservationID() + 1;
+        }
+        ++i;
+    } while (i == 1);
+
+    //TODO walidacja
+    std::cout << "Podaj date rezerwacji ";
+    std::cin >> date;
+    std::cout << std::endl;
+
+    HotelManager::PrintClients();
+    std::cout << "Podaj ID goscia ";
+    std::cin >> selectedClientID;
+    std::cout << std::endl;
+
+    HotelManager::PrintRooms(date);
+    std::cout << "Podaj ID pokoju ";
+    std::cin >> selectedRoomID;
+    std::cout << std::endl;
+
+    do
+    {
+        std::cout << std::endl << "Czy rezerwacja zostala oplacona z gory? Nacisnij 'Y' jezeli tak, 'N' jezeli nie" << std::endl;
+        c = _getch();
+        std::cout << std::endl;
+    } while (c != 'n' && c != 'y');
+
+    switch (c)
+    {
+    case 'y':
+        paid = true;
+        break;
+    case 'n':
+        paid = false;
+        break;
+    }
+
+    Reservation newReservation(reservationID, selectedRoomID, selectedClientID, date, paid, true);
+    reservations.push_back(newReservation);
+}
+
+void HotelManager::SaveReservationsToCSV()
+{
+
+    std::ofstream file(filenameReservation, std::ios::ate);
+
+    if (file.is_open())
+    {
+        for (const auto& reservation : reservations)
+        {
+            file << reservation.getReservationID() << "," << reservation.getRoomID() << "," << reservation.getClientID() << "," << reservation.getDate() << "," << reservation.isPaid() << "," << reservation.getStatus() << "\n";
+        }
+        file.close();
+        std::cout << "Reservations data added to " << filenameReservation << std::endl;
+        reservations.clear();
+    }
+    else
+    {
+        std::cerr << "Error while opening file: " << filenameReservation << std::endl;
+    }
+}
+
+void HotelManager::PrintReservations()
+{
+    if (reservations.empty())
+    {
+        HotelManager::ReadFromCSV("reservations");
+    }
+
+    std::cout << std::left << std::setw(15) << "ID rezerwacji" << std::setw(15) << "ID pokoju" << std::setw(15) << "ID klienta" << std::setw(15) << "Data" << std::setw(10) << "Oplacone" << "\n";
+
+    for (const auto& reservation : reservations)
+    {
+        std::cout << std::setw(15) << reservation.getReservationID() << std::setw(15) << reservation.getRoomID() << std::setw(15) << reservation.getClientID() << std::setw(15) << reservation.getDate() << std::setw(10) << reservation.isPaid() << "\n";
     }
 
 }

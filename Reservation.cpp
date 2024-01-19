@@ -1,7 +1,7 @@
 #include "Reservation.h"
 
-Reservation::Reservation(int reservationID, int roomID, int clientID, int date, bool paid)
-    : reservationID(reservationID), roomID(roomID), clientID(clientID), date(date), paid(paid)
+Reservation::Reservation(int reservationID, int roomID, int clientID, int date, bool paid, bool status)
+    : reservationID(reservationID), roomID(roomID), clientID(clientID), date(date), paid(paid), status(status)
 {}
 
 
@@ -48,4 +48,14 @@ const bool& Reservation::isPaid() const
 void Reservation::setPaid(bool paid)
 {
     this->paid = paid;
+}
+
+const bool& Reservation::getStatus() const
+{
+    return paid;
+}
+
+void Reservation::setStatus(bool status)
+{
+    this->status = status;
 }
