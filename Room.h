@@ -1,8 +1,8 @@
 #pragma once
-
+#include "Entity.h"
 #include <string>
 
-class Room
+class Room : public Entity
 {
 public:
     Room(int roomID, const std::string& roomNumber, int capacity, double pricePerNight, bool isAvailable);
@@ -20,6 +20,9 @@ public:
 
     const bool isAvailable() const;
     void setAvailability(bool available);
+
+    virtual void PrintHeading() const;
+    virtual void Print() const;
 
 private:
     int roomID;

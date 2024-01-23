@@ -59,3 +59,13 @@ void Reservation::setStatus(bool status)
 {
     this->status = status;
 }
+
+void Reservation::PrintHeading() const
+{
+    std::cout << std::left << std::setw(15) << "ID rezerwacji" << std::setw(15) << "ID pokoju" << std::setw(15) << "ID klienta" << std::setw(15) << "Data" << std::setw(10) << "Oplacone" << "\n";
+}
+
+void Reservation::Print() const
+{
+    std::cout << std::setw(15) << getReservationID() << std::setw(15) << getRoomID() << std::setw(15) << getClientID() << std::setw(15) << getDate() << std::setw(10) << isPaid() << "\n";
+}

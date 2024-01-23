@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="HotelManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Reservation.h" />

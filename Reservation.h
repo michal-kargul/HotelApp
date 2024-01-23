@@ -1,6 +1,8 @@
 #pragma once
+#include "Entity.h"
+#include <iomanip>
 
-class Reservation
+class Reservation : public Entity
 {
 public:
     Reservation(int reservationID, int roomID, int clientID, int date, bool paid, bool status);
@@ -21,6 +23,9 @@ public:
 
     const bool& getStatus() const;
     void setStatus(bool status);
+
+    virtual void PrintHeading() const;
+    virtual void Print() const;
 
 private:
     int reservationID;

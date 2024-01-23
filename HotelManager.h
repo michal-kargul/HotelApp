@@ -9,18 +9,23 @@
 #include <conio.h>
 #include <regex>
 
+enum class Object
+{
+    Clients,
+    Rooms,
+    Reservations
+};
 
 class HotelManager
 {
 public:
 
     void AddClient();
-    void PrintClients();
     void ReadFromCSV(const std::string& whatToRead);
     void AddRoom();
-    void PrintRooms();
-    void PrintRooms(const int date);
-    void PrintReservations();
+    void PrintEntity(Object obj, const int date = 0);
+    void PrintEntityHeading(const Entity& entity);
+    void PrintEntityData(const Entity& entity);
     void AddReservation();
     void AddReservationFromConsole();
 

@@ -16,15 +16,15 @@ int main() {
             switch (m1.GetUserInput())
             {
             case MenuOption::Rooms:
-                hotel.PrintRooms();
+                hotel.PrintEntity(Object::Rooms);
                 system("pause");
                 break;
             case MenuOption::Clients:
-                hotel.PrintClients();
+                hotel.PrintEntity(Object::Clients);
                 system("pause");
                 break;
             case MenuOption::Reservations:
-                hotel.PrintReservations();
+                hotel.PrintEntity(Object::Reservations);
                 system("pause");
                 break;
             case MenuOption::Book:

@@ -1,7 +1,8 @@
 #pragma once
+#include "Entity.h"
 #include <string>
 
-class Client
+class Client : public Entity
 {
 public:
     Client(const int id, const std::string& name, const std::string& surname, const std::string& email, const std::string& phoneNumber, const std::string& peselID);
@@ -21,6 +22,9 @@ public:
     void setPhoneNumber(const std::string& phoneNumber);
 
     const std::string& getPeselID() const;
+
+    virtual void PrintHeading() const;
+    virtual void Print() const;
 
 private:
     int id;

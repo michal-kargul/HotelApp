@@ -15,7 +15,7 @@ const std::string& Room::getRoomNumber() const
     return roomNumber;
 }
 
-void Room::setRoomNumber(const std::string& name)
+void Room::setRoomNumber(const std::string& roomNumber)
 {
     this->roomNumber = roomNumber;
 }
@@ -48,4 +48,14 @@ const bool Room::isAvailable() const
 void Room::setAvailability(bool available)
 {
     this->available = available;
+}
+
+void Room::PrintHeading() const
+{
+    std::cout << std::left << std::setw(15) << "ID pokoju" << std::setw(15) << "Numer pokoju" << std::setw(10) << "Pojemnosc" << std::setw(15) << "Cena za noc" << std::setw(10) << "Dostepnosc" << "\n";
+}
+
+void Room::Print() const
+{
+    std::cout << std::setw(15) << getRoomID() << std::setw(15) << getRoomNumber() << std::setw(10) << getCapacity() << std::setw(15) << getPricePerNight() << std::setw(10) << isAvailable() << "\n";
 }

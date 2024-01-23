@@ -53,3 +53,13 @@ const std::string& Client::getPeselID() const
 {
     return peselID;
 }
+
+void Client::PrintHeading() const
+{
+    std::cout << std::left << std::setw(4) << "ID" << std::setw(15) << "Imie" << std::setw(15) << "Nazwisko" << std::setw(20) << "Email" << std::setw(15) << "Nr telefonu" << std::setw(15) << "Pesel" << "\n";
+}
+
+void Client::Print() const
+{
+    std::cout << std::setw(4) << getID() << std::setw(15) << getName() << std::setw(15) << getSurname() << std::setw(20) << getEmail() << std::setw(15) << getPhoneNumber() << std::setw(15) << getPeselID() << "\n";
+}
