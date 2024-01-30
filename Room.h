@@ -21,8 +21,8 @@ public:
     const bool isAvailable() const;
     void setAvailability(bool available);
 
-    virtual void PrintHeading() const;
-    virtual void Print() const;
+    virtual void PrintHeading() const override;
+    virtual void Print() const override;
 
 private:
     int roomID;

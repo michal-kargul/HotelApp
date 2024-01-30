@@ -6,14 +6,14 @@ void HotelManager::AddClient()
 
     do
     {
-        HotelManager::AddClientFromConsole();
+        AddClientFromConsole();
  
         std::cout << std::endl << "Czy chcesz dodac kolejnego klienta? Nacisnij 'Y' jezeli tak, 'N' jezeli nie" << std::endl;
         c = _getch();
         std::cout << std::endl;
     } while (c != 'n');
 
-    HotelManager::SaveClientsToCSV();
+    SaveClientsToCSV();
 }
 
 void HotelManager::AddClientFromConsole()
@@ -31,7 +31,7 @@ void HotelManager::AddClientFromConsole()
     {
         if (clients.empty() && i == 0)
         {
-            HotelManager::ReadFromCSV("clients");
+            ReadFromCSV("clients");
         }
         else if (clients.empty() && i != 0)
         {
@@ -179,14 +179,14 @@ void HotelManager::AddRoom()
 
     do
     {
-        HotelManager::AddRoomFromConsole();
+        AddRoomFromConsole();
 
         std::cout << std::endl << "Czy chcesz dodac kolejny pokoj? Nacisnij 'Y' jezeli tak, 'N' jezeli nie" << std::endl;
         c = _getch();
         std::cout << std::endl;
     } while (c != 'n');
 
-    HotelManager::SaveRoomsToCSV();
+    SaveRoomsToCSV();
 }
 // TODO: Walidacja
 void HotelManager::AddRoomFromConsole()
@@ -210,7 +210,7 @@ void HotelManager::AddRoomFromConsole()
     {
         if (rooms.empty() && i == 0)
         {
-            HotelManager::ReadFromCSV("rooms");
+            ReadFromCSV("rooms");
         }
         else if (rooms.empty() && i != 0)
         {
@@ -284,35 +284,36 @@ void HotelManager::AddReservation()
 
     do
     {
-        HotelManager::AddReservationFromConsole();
+        AddReservationFromConsole();
 
         std::cout << std::endl << "Czy chcesz dodac kolejna rezerwacje? Nacisnij 'Y' jezeli tak, 'N' jezeli nie" << std::endl;
         c = _getch();
         std::cout << std::endl;
     } while (c != 'n');
 
-    HotelManager::SaveReservationsToCSV();
+    SaveReservationsToCSV();
 }
 
 void HotelManager::AddReservationFromConsole()
 {
     int i = 0;
-    int date;
+    int day;
     int reservationID;
     int selectedRoomID;
     int selectedClientID;
     char c;
     char paid;
+    std::vector<int> dates;
 
     do
     {
         if (clients.empty() && i == 0)
         {
-            HotelManager::ReadFromCSV("clients");
+            ReadFromCSV("clients");
         }
         else if (clients.empty() && i != 0)
         {
-            HotelManager::AddClient();
+            AddClient();
         }
         ++i;
     } while (i == 1);
@@ -321,11 +322,11 @@ void HotelManager::AddReservationFromConsole()
     {
         if (rooms.empty() && i == 0)
         {
-            HotelManager::ReadFromCSV("rooms");
+            ReadFromCSV("rooms");
         }
         else if (clients.empty() && i != 0)
         {
-            HotelManager::AddRoom();
+            AddRoom();
         }
         ++i;
     } while (i == 1);
@@ -334,7 +335,7 @@ void HotelManager::AddReservationFromConsole()
     {
         if (reservations.empty() && i == 0)
         {
-            HotelManager::ReadFromCSV("reservations");
+            ReadFromCSV("reservations");
         }
         else if (reservations.empty() && i != 0)
         {
@@ -348,16 +349,21 @@ void HotelManager::AddReservationFromConsole()
     } while (i == 1);
 
     //TODO walidacja
-    std::cout << "Podaj date rezerwacji ";
-    std::cin >> date;
-    std::cout << std::endl;
+    std::cout << "Podaj daty rezerwacji, jezeli nie chcesz podawac wiecej - wpisz 0 ";
+    do
+    {
+        std::cin >> day;
+        if (day!=0)
+        dates.push_back(day);
+        std::cout << std::endl;
+    } while (day != 0);
 
-    HotelManager::PrintEntity(Object::Clients);
+    PrintEntity(DataSet::Clients);
     std::cout << "Podaj ID goscia ";
     std::cin >> selectedClientID;
     std::cout << std::endl;
 
-    HotelManager::PrintEntity(Object::Clients, date);
+    PrintEntity(DataSet::Rooms, dates);
     std::cout << "Podaj ID pokoju ";
     std::cin >> selectedRoomID;
     std::cout << std::endl;
@@ -379,8 +385,12 @@ void HotelManager::AddReservationFromConsole()
         break;
     }
 
-    Reservation newReservation(reservationID, selectedRoomID, selectedClientID, date, paid, true);
-    reservations.push_back(newReservation);
+    for (auto& date : dates)
+    {
+        Reservation newReservation(reservationID, selectedRoomID, selectedClientID, date, paid, true);
+        reservations.push_back(newReservation);
+    }
+
 }
 
 void HotelManager::SaveReservationsToCSV()
@@ -404,91 +414,76 @@ void HotelManager::SaveReservationsToCSV()
     }
 }
 
-void HotelManager::PrintEntity(Object obj, const int date)
+void HotelManager::PrintEntity(DataSet ds, const std::vector<int>& date)
 {
-    bool isFirstIteration = true;
-
-    switch (obj)
+    switch (ds)
     {
-    case Object::Clients:
+    case DataSet::Clients:
         if (clients.empty())
         {
-            HotelManager::ReadFromCSV("clients");
+            ReadFromCSV("clients");
         }
+
+        PrintEntityHeading(clients.front());
 
         for (const auto& client : clients)
         {
-            Client clientToPrint(client.getID(), client.getName(), client.getSurname(), client.getEmail(), client.getPhoneNumber(), client.getPeselID());
-
-            if (isFirstIteration)
-            {
-                HotelManager::PrintEntityHeading(clientToPrint);
-                isFirstIteration = false;
-            }
-
-            HotelManager::PrintEntityData(clientToPrint);
+            PrintEntityData(client);
         }
         break;
-    case Object::Rooms:
+    case DataSet::Rooms:
         if (rooms.empty())
         {
-            HotelManager::ReadFromCSV("rooms");
+            ReadFromCSV("rooms");
         }
 
-        if (date != 0 && reservations.empty())
+        if (!date.empty() && reservations.empty())
         {
-            HotelManager::ReadFromCSV("reservations");
+            ReadFromCSV("reservations");
         }
         
-        if (date != 0)
+        if (!date.empty())
         {
+            PrintEntityHeading(rooms.front());
             for (const auto& room : rooms)
             {
                 for (const auto& reservation : reservations)
                 {
-                    if ((date != reservation.getDate()) || ((reservation.getRoomID() != room.getRoomID()) && (date == reservation.getDate())))
+                    bool dateMatch = false;
+
+                    for (int currentDate : date)
                     {
-                        Room roomToPrint(room.getRoomID(), room.getRoomNumber(), room.getCapacity(), room.getPricePerNight(), room.isAvailable());
-                        if (isFirstIteration)
+                        if (currentDate == reservation.getDate())
                         {
-                            HotelManager::PrintEntityHeading(roomToPrint);
-                            isFirstIteration = false;
+                            dateMatch = true;
+                            break;
                         }
-                        HotelManager::PrintEntityData(roomToPrint);
+                    }
+                    if (!dateMatch || ((reservation.getRoomID() != room.getRoomID()) && dateMatch)) //Tu jest teraz cos nie tak - do poprawy
+                    {
+                        PrintEntityData(room);
                     }
                 }
             }
         }
         else
         {
+            PrintEntityHeading(rooms.front());
             for (const auto& room : rooms)
             {
-                Room roomToPrint(room.getRoomID(), room.getRoomNumber(), room.getCapacity(), room.getPricePerNight(), room.isAvailable());
-                HotelManager::PrintEntityData(roomToPrint);
+                PrintEntityData(room);
             }
         }
         break;
-    case Object::Reservations:
+    case DataSet::Reservations:
         if (reservations.empty())
         {
-            HotelManager::ReadFromCSV("reservations");
+            ReadFromCSV("reservations");
         }
-
+        PrintEntityHeading(reservations.front());
         for (const auto& reservation : reservations)
         {
-            Reservation reservationToPrint(reservation.getReservationID(), reservation.getRoomID(), reservation.getClientID(), reservation.getDate(), reservation.isPaid(), 1);
-
-            // Sprawdzenie innego sposobu
-            Entity *ent;
-            ent = &reservationToPrint;
-
-            if (isFirstIteration)
-            {
-                ent -> PrintHeading();
-                isFirstIteration = false;
-            }
-            
-            ent -> Print();
+            PrintEntityData(reservation);
         }
         break;
     default:

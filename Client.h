@@ -23,8 +23,8 @@ public:
 
     const std::string& getPeselID() const;
 
-    virtual void PrintHeading() const;
-    virtual void Print() const;
+    virtual void PrintHeading() const override;
+    virtual void Print() const override;
 
 private:
     int id;

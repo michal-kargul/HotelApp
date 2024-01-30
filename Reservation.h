@@ -24,8 +24,8 @@ public:
     const bool& getStatus() const;
     void setStatus(bool status);
 
-    virtual void PrintHeading() const;
-    virtual void Print() const;
+    virtual void PrintHeading() const override;
+    virtual void Print() const override;
 
 private:
     int reservationID;

@@ -8,8 +8,9 @@
 #include <vector>
 #include <conio.h>
 #include <regex>
+#include <functional>
 
-enum class Object
+enum class DataSet
 {
     Clients,
     Rooms,
@@ -23,7 +24,7 @@ public:
     void AddClient();
     void ReadFromCSV(const std::string& whatToRead);
     void AddRoom();
-    void PrintEntity(Object obj, const int date = 0);
+    void PrintEntity(DataSet ds, const std::vector<int>& dates = {});
     void PrintEntityHeading(const Entity& entity);
     void PrintEntityData(const Entity& entity);
     void AddReservation();
