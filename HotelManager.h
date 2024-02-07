@@ -22,9 +22,10 @@ class HotelManager
 public:
 
     void AddClient();
-    void ReadFromCSV(const std::string& whatToRead);
+    void ReadFromCSV(DataSet ds);
     void AddRoom();
     void PrintEntity(DataSet ds, const std::vector<int>& dates = {});
+    void RemoveEntity(DataSet ds);
     void PrintEntityHeading(const Entity& entity);
     void PrintEntityData(const Entity& entity);
     void AddReservation();
@@ -42,4 +43,7 @@ private:
     const std::string filenameRoom = "rooms.csv";
     const std::string filenameReservation = "reservations.csv";
     std::vector<Reservation> reservations;
+    void RemoveRoom(int id);
+    void RemoveClient(int id);
+    void RemoveReservation(int id);
 };

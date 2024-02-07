@@ -31,7 +31,7 @@ void HotelManager::AddClientFromConsole()
     {
         if (clients.empty() && i == 0)
         {
-            ReadFromCSV("clients");
+            ReadFromCSV(DataSet::Clients);
         }
         else if (clients.empty() && i != 0)
         {
@@ -107,26 +107,27 @@ void HotelManager::SaveClientsToCSV()
 }
 
 
-void HotelManager::ReadFromCSV(const std::string& whatToRead)
+void HotelManager::ReadFromCSV(DataSet ds)
 {
     std::string fileName;
 
-    //TODO whatToRead zamienic na enum i else if na switch.
-
-    if (whatToRead == "clients")
+    switch (ds)
     {
+    case DataSet::Clients:
         fileName = filenameClient;
         clients.clear();
-    }
-    else if (whatToRead == "rooms")
-    {
+        break;
+    case DataSet::Rooms:
         fileName = filenameRoom;
         rooms.clear();
-    }
-    else if (whatToRead == "reservations")
-    {
+        break;
+    case DataSet::Reservations:
         fileName = filenameReservation;
         reservations.clear();
+        break;
+    default:
+        std::cerr << "Zly parametr dla RemoveEntity";
+        break;
     }
 
     std::ifstream file(fileName);
@@ -145,22 +146,21 @@ void HotelManager::ReadFromCSV(const std::string& whatToRead)
             {
                 cells.push_back(cell);
             }
-            if (whatToRead == "clients")
+            switch (ds)
             {
-                Client clientFromCSV(stoi(cells[0]), cells[1], cells[2], cells[3], cells[4], cells[5]);
-                clients.push_back(clientFromCSV);
-            }
-            else if (whatToRead == "rooms")
-            {
-                Room roomFromCSV(stoi(cells[0]), cells[1], stoi(cells[2]), std::stod(cells[3]), cells[4] == "1");
-                rooms.push_back(roomFromCSV);
-            }
-            else if (whatToRead == "reservations")
-            {
-                Reservation reservationFromCSV(stoi(cells[0]), stoi(cells[1]), stoi(cells[2]), std::stoi(cells[3]), cells[4] == "1", cells[5] == "1");
-                reservations.push_back(reservationFromCSV);
-            }
-           
+            case DataSet::Clients:
+                clients.emplace_back(stoi(cells[0]), cells[1], cells[2], cells[3], cells[4], cells[5]);
+                break;
+            case DataSet::Rooms:
+                rooms.emplace_back(stoi(cells[0]), cells[1], stoi(cells[2]), std::stod(cells[3]), cells[4] == "1");
+                break;
+            case DataSet::Reservations:
+                reservations.emplace_back(stoi(cells[0]), stoi(cells[1]), stoi(cells[2]), std::stoi(cells[3]), cells[4] == "1", cells[5] == "1");
+                break;
+            default:
+                std::cerr << "Zly parametr dla RemoveEntity";
+                break;
+            }          
         }
 
         file.close();
@@ -210,7 +210,7 @@ void HotelManager::AddRoomFromConsole()
     {
         if (rooms.empty() && i == 0)
         {
-            ReadFromCSV("rooms");
+            ReadFromCSV(DataSet::Rooms);
         }
         else if (rooms.empty() && i != 0)
         {
@@ -309,7 +309,7 @@ void HotelManager::AddReservationFromConsole()
     {
         if (clients.empty() && i == 0)
         {
-            ReadFromCSV("clients");
+            ReadFromCSV(DataSet::Clients);
         }
         else if (clients.empty() && i != 0)
         {
@@ -322,7 +322,7 @@ void HotelManager::AddReservationFromConsole()
     {
         if (rooms.empty() && i == 0)
         {
-            ReadFromCSV("rooms");
+            ReadFromCSV(DataSet::Rooms);
         }
         else if (clients.empty() && i != 0)
         {
@@ -335,7 +335,7 @@ void HotelManager::AddReservationFromConsole()
     {
         if (reservations.empty() && i == 0)
         {
-            ReadFromCSV("reservations");
+            ReadFromCSV(DataSet::Reservations);
         }
         else if (reservations.empty() && i != 0)
         {
@@ -387,8 +387,7 @@ void HotelManager::AddReservationFromConsole()
 
     for (auto& date : dates)
     {
-        Reservation newReservation(reservationID, selectedRoomID, selectedClientID, date, paid, true);
-        reservations.push_back(newReservation);
+        reservations.emplace_back(reservationID, selectedRoomID, selectedClientID, date, paid, true);
     }
 
 }
@@ -414,14 +413,136 @@ void HotelManager::SaveReservationsToCSV()
     }
 }
 
-void HotelManager::PrintEntity(DataSet ds, const std::vector<int>& date)
+void HotelManager::RemoveEntity(DataSet ds)
+{
+    int id;
+    char c;
+    switch (ds)
+    {
+    case DataSet::Clients:
+        if (clients.empty())
+        {
+            ReadFromCSV(DataSet::Clients);
+        }
+        PrintEntity(DataSet::Clients);
+        std::cout << "Podaj ID klienta do usuniecia: ";
+        std::cin >> id;
+        RemoveClient(id);
+        do
+        {
+            std::cout << std::endl << "Czy chcesz usunac rezerwacje powiazane z tym klientem? Y = tak, N = nie " << std::endl;
+            c = _getch();
+            std::cout << std::endl;
+        } while (c != 'n');
+        if (c == 'y')
+        {
+            //TODO
+        }
+        break;
+    case DataSet::Rooms:
+        if (rooms.empty())
+        {
+            ReadFromCSV(DataSet::Rooms);
+        }
+        PrintEntity(DataSet::Rooms);
+        std::cout << "Podaj ID pokoju do usuniecia: ";
+        std::cin >> id;
+        RemoveRoom(id);
+        do
+        {
+            std::cout << std::endl << "Czy chcesz usunac rezerwacje powiazane z tym pokojem? Y = tak, N = nie " << std::endl;
+            c = _getch();
+            std::cout << std::endl;
+        } while (c != 'n');
+        if (c == 'y')
+        {
+            //TODO
+        }
+        break;
+    case DataSet::Reservations:
+        if (reservations.empty())
+        {
+            ReadFromCSV(DataSet::Reservations);
+        }
+        PrintEntity(DataSet::Reservations);
+        std::cout << "Podaj ID rezerwacji do usuniecia: ";
+        std::cin >> id;
+        RemoveReservation(id);
+        do
+        {
+            std::cout << std::endl << "Czy chcesz usunac rezerwacje powiazane z tym pokojem? Y = tak, N = nie " << std::endl;
+            c = _getch();
+            std::cout << std::endl;
+        } while (c != 'n');
+        if (c == 'y')
+        {
+            //TODO
+        }
+        break;
+    default:
+        std::cerr << "Zly parametr dla RemoveEntity";
+        break;
+    }
+}
+void HotelManager::RemoveClient(int id)
+{
+    auto it = std::find_if(clients.begin(), clients.end(), [id](const Client& client) {
+        return client.getID() == id;
+        });
+
+    if (it != clients.end())
+    {
+        clients.erase(it);
+        std::cout << "Klient " << id << " zostal usuniety." << std::endl;
+    }
+    else
+    {
+        std::cerr << "Nie znaleziono klienta z podanym id " << id << std::endl;
+    }
+}
+
+void HotelManager::RemoveRoom(int id)
+{
+    auto it = std::find_if(rooms.begin(), rooms.end(), [id](const Room& room) {
+        return room.getRoomID() == id;
+        });
+
+    if (it != rooms.end())
+    {
+        rooms.erase(it);
+        std::cout << "Pokoj " << id << " zostal usuniety." << std::endl;
+    }
+    else
+    {
+        std::cerr << "Nie znaleziono pokoju z podanym id " << id << std::endl;
+    }
+}
+
+void HotelManager::RemoveReservation(int id)
+{
+    auto it = std::find_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
+        return reservation.getReservationID() == id;
+        });
+
+    if (it != reservations.end())
+    {
+        reservations.erase(it);
+        std::cout << "Rezerwacja " << id << " zostala usunieta." << std::endl;
+    }
+    else
+    {
+        std::cerr << "Nie znaleziono rezerwacji z podanym id " << id << std::endl;
+    }
+}
+
+void HotelManager::PrintEntity(DataSet ds, const std::vector<int>& dates)
 {
     switch (ds)
     {
     case DataSet::Clients:
         if (clients.empty())
         {
-            ReadFromCSV("clients");
+            ReadFromCSV(DataSet::Clients);
         }
 
         PrintEntityHeading(clients.front());
@@ -434,35 +555,34 @@ void HotelManager::PrintEntity(DataSet ds, const std::vector<int>& date)
     case DataSet::Rooms:
         if (rooms.empty())
         {
-            ReadFromCSV("rooms");
+            ReadFromCSV(DataSet::Rooms);
         }
 
-        if (!date.empty() && reservations.empty())
+        if (!dates.empty() && reservations.empty())
         {
-            ReadFromCSV("reservations");
+            ReadFromCSV(DataSet::Reservations);
         }
         
-        if (!date.empty())
+        if ((!dates.empty()))
         {
+            
             PrintEntityHeading(rooms.front());
             for (const auto& room : rooms)
             {
-                for (const auto& reservation : reservations)
+                bool roomAvailable = true;
+                for (const auto& date : dates)
                 {
-                    bool dateMatch = false;
-
-                    for (int currentDate : date)
+                    if (std::find_if(reservations.begin(), reservations.end(), [&](const auto& reservation) {
+                        return reservation.getRoomID() == room.getRoomID() && date == reservation.getDate();
+                        }) != reservations.end())
                     {
-                        if (currentDate == reservation.getDate())
-                        {
-                            dateMatch = true;
-                            break;
-                        }
+                        roomAvailable = false;
+                        break;
                     }
-                    if (!dateMatch || ((reservation.getRoomID() != room.getRoomID()) && dateMatch)) //Tu jest teraz cos nie tak - do poprawy
-                    {
-                        PrintEntityData(room);
-                    }
+                }
+                if (roomAvailable)
+                {
+                    PrintEntityData(room);
                 }
             }
         }
@@ -478,7 +598,7 @@ void HotelManager::PrintEntity(DataSet ds, const std::vector<int>& date)
     case DataSet::Reservations:
         if (reservations.empty())
         {
-            ReadFromCSV("reservations");
+            ReadFromCSV(DataSet::Reservations);
         }
         PrintEntityHeading(reservations.front());
         for (const auto& reservation : reservations)
