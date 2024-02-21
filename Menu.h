@@ -17,6 +17,7 @@ enum MenuOption
     Book,
     AddClient,
     AddRoom,
+    RemoveRoom,
     Stop,
 };
 

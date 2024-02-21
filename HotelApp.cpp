@@ -36,6 +36,9 @@ int main() {
             case MenuOption::AddRoom:
                 hotel.AddRoom();
                 break;
+            case MenuOption::RemoveRoom:
+                hotel.RemoveEntity(DataSet::Rooms);
+                break;
             case MenuOption::Stop:
                 exit = true;
                 break;

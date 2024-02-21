@@ -10,6 +10,7 @@ Menu::Menu()
         {MenuOption::Book, "Rezerwuj"},
         {MenuOption::AddClient, "Dodaj Klienta"},
         {MenuOption::AddRoom, "Dodaj Pokoj"},
+        {MenuOption::RemoveRoom, "Usun Pokoj"},
         {MenuOption::Stop, "Wyjdz"}
     };
 }

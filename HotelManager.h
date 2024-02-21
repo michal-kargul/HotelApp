@@ -10,6 +10,7 @@
 #include <regex>
 #include <functional>
 
+
 enum class DataSet
 {
     Clients,
@@ -22,10 +23,10 @@ class HotelManager
 public:
 
     void AddClient();
-    void ReadFromCSV(DataSet ds);
+    void ReadFromCSV(const DataSet ds);
     void AddRoom();
-    void PrintEntity(DataSet ds, const std::vector<int>& dates = {});
-    void RemoveEntity(DataSet ds);
+    void PrintEntity(const DataSet ds);
+    void RemoveEntity(const DataSet ds);
     void PrintEntityHeading(const Entity& entity);
     void PrintEntityData(const Entity& entity);
     void AddReservation();
@@ -46,4 +47,5 @@ private:
     void RemoveRoom(int id);
     void RemoveClient(int id);
     void RemoveReservation(int id);
+    void PrintEntityWithFilter(const Entity* entity, std::function<bool(const Entity*)> filter);
 };
