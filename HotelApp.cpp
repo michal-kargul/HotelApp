@@ -36,8 +36,14 @@ int main() {
             case MenuOption::AddRoom:
                 hotel.AddRoom();
                 break;
+            case MenuOption::RemoveClient:
+                hotel.RemoveEntity(DataSet::Rooms);
+                break;
             case MenuOption::RemoveRoom:
                 hotel.RemoveEntity(DataSet::Rooms);
+                break;
+            case MenuOption::EditData:
+                hotel.EditData();
                 break;
             case MenuOption::Stop:
                 exit = true;

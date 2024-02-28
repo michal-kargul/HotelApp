@@ -136,7 +136,7 @@ void HotelManager::ReadFromCSV(const DataSet ds)
     {
         std::string line;
         std::string cell;
-        size_t pos = 0;
+        auto pos = 0;
 
         while (std::getline(file, line, '\n'))
         {
@@ -204,26 +204,16 @@ void HotelManager::AddRoomFromConsole()
 
     lastFloorID = 100 * floor;
 
-    do
-    {
-        if (rooms.empty() && i == 0)
-        {
-            ReadFromCSV(DataSet::Rooms);
-        }
-        else if (rooms.empty() && i != 0)
-        {
-            id = 1;
-        }
-        else {
-            const auto& lastRoom = rooms.back();
-            id = lastRoom.getRoomID() + 1;
-        }
-        ++i;
-    } while (i == 1);
+    ReadFromCSV(DataSet::Rooms);
 
-    for (const auto& room : rooms)
+    if (rooms.empty())
     {
-        std::cout << std::setw(15) << room.getRoomID() << std::setw(10) << room.getCapacity() << std::setw(15) << room.getPricePerNight() << std::setw(10) << room.isAvailable() << "\n";
+        id = 1;
+    }
+    else
+    {
+        const auto& lastRoom = rooms.back();
+        id = lastRoom.getRoomID() + 1;
     }
 
     std::cout << "Podaj numer pokoju: ";
@@ -307,7 +297,7 @@ void HotelManager::AddReservationFromConsole()
     ReadFromCSV(DataSet::Rooms);
     ReadFromCSV(DataSet::Reservations);
 
-    if (clients.empty() && i != 0)
+    if (clients.empty())
     {
         AddClient();
     }
@@ -317,25 +307,18 @@ void HotelManager::AddReservationFromConsole()
         AddRoom();
     }
 
-    do
+    if (reservations.empty())
     {
-        if (reservations.empty() && i == 0)
-        {
-            ReadFromCSV(DataSet::Reservations);
-        }
-        else if (reservations.empty() && i != 0)
-        {
-            reservationID = 1;
-        }
-        else {
-            const auto& lastReservation = reservations.back();
-            reservationID = lastReservation.getReservationID() + 1;
-        }
-        ++i;
-    } while (i == 1);
+        reservationID = 1;
+    }
+    else
+    {
+        const auto& lastReservation = reservations.back();
+        reservationID = lastReservation.getReservationID() + 1;
+    }
 
     //TODO walidacja
-    std::cout << "Podaj daty rezerwacji, jezeli nie chcesz podawac wiecej - wpisz 0 ";
+    std::cout << "Podaj daty rezerwacji, jezeli nie chcesz podawac wiecej - wpisz 0 " << std::endl;
     do
     {
         std::cin >> day;
@@ -352,8 +335,9 @@ void HotelManager::AddReservationFromConsole()
     PrintEntityHeading(rooms.front());
     std::vector<int> availableRooms;
     for (const auto& room : rooms) {
-        std::unique_ptr<const Room> roomPtr = std::make_unique<const Room>(room);
-        PrintEntityWithFilter(roomPtr.get(), [&](const Entity* entity)
+        auto roomPtr = std::make_unique<const Room>(room);
+        PrintEntityWithFilter(roomPtr.get(), [&](const Entity* entity) //No suitable conversion function from "std::unique_ptr<const Room, std::default_delete<const Room>>" to "const Entity *" exists - muszê tu zastosowaæ get(), aby dopasowaæ siê do pierwszego parametru funkcji PrintEntityWithFilter
+
             {
             if (auto roomPtr = dynamic_cast<const Room*>(entity))
             {
@@ -457,7 +441,30 @@ void HotelManager::RemoveEntity(const DataSet ds)
         } while (c != 'n');
         if (c == 'y')
         {
-            RemoveEntity(DataSet::Reservations);
+            if (reservations.empty())
+            {
+                ReadFromCSV(DataSet::Reservations);
+            }
+            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
+                if (reservation.getClientID() == id)
+                {
+                    std::cout << "Rezerwacja o id:" << reservation.getReservationID() << " zostanie usunieta" << std::endl;
+                }
+                return reservation.getClientID() == id;
+                }), reservations.end());
+
+            std::cout << "Czy potwierdzasz?";
+
+            do
+            {
+                c = _getch();
+            } while (c != 'n' && c != 'y');
+
+            if (c == 'y')
+            {
+                SaveReservationsToCSV();
+            }
+            SaveRoomsToCSV();
         }
         break;
     case DataSet::Rooms:
@@ -474,10 +481,30 @@ void HotelManager::RemoveEntity(const DataSet ds)
             std::cout << std::endl << "Czy chcesz usunac rezerwacje powiazane z tym pokojem? Y = tak, N = nie " << std::endl;
             c = _getch();
             std::cout << std::endl;
-        } while (c != 'n');
+        } while (c != 'n' && c != 'y');
         if (c == 'y')
         {
-            RemoveReservation(id);
+            if (reservations.empty())
+            {
+                ReadFromCSV(DataSet::Reservations);
+            }
+            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
+                if (reservation.getRoomID() == id)
+                {
+                    std::cout << "Rezerwacja o id:" << reservation.getReservationID() << " zostanie usunieta" << std::endl;
+                }
+                return reservation.getRoomID() == id;
+                }), reservations.end());
+            std::cout << "Czy potwierdzasz?";
+            do
+            {
+                c = _getch();
+            } while (c != 'n' && c != 'y');
+            if (c == 'y')
+            {
+                SaveReservationsToCSV();
+            }
+            SaveRoomsToCSV();
         }
         break;
     case DataSet::Reservations:
@@ -497,13 +524,13 @@ void HotelManager::RemoveEntity(const DataSet ds)
 }
 void HotelManager::RemoveClient(const int id)
 {
-    size_t sizeBeforeRemoval = clients.size();
+    auto sizeBeforeRemoval = clients.size();
 
     clients.erase(std::remove_if(clients.begin(), clients.end(), [id](const Client& client) {
         return client.getID() == id;
         }), clients.end());
 
-    size_t sizeAfterRemoval = clients.size();
+    auto sizeAfterRemoval = clients.size();
 
     if (sizeAfterRemoval < sizeBeforeRemoval) {
         std::cout << "Klient " << id << " zostal usuniety." << std::endl;
@@ -515,13 +542,13 @@ void HotelManager::RemoveClient(const int id)
 
 void HotelManager::RemoveRoom(const int id)
 {
-    size_t sizeBeforeRemoval = rooms.size();
+    auto sizeBeforeRemoval = rooms.size();
 
     rooms.erase(std::remove_if(rooms.begin(), rooms.end(), [id](const Room& room) {
         return room.getRoomID() == id;
         }), rooms.end());
 
-    size_t sizeAfterRemoval = rooms.size();
+    auto sizeAfterRemoval = rooms.size();
 
     if (sizeAfterRemoval < sizeBeforeRemoval) {
         std::cout << "Pokoj " << id << " zostal usuniety." << std::endl;
@@ -533,13 +560,13 @@ void HotelManager::RemoveRoom(const int id)
 
 void HotelManager::RemoveReservation(const int id)
 {
-    size_t sizeBeforeRemoval = reservations.size();
+    auto sizeBeforeRemoval = reservations.size();
 
     reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
         return reservation.getReservationID() == id;
         }), reservations.end());
 
-    size_t sizeAfterRemoval = reservations.size();
+    auto sizeAfterRemoval = reservations.size();
 
     if (sizeAfterRemoval < sizeBeforeRemoval) {
         std::cout << "Rezerwacja " << id << " zostala usunieta." << std::endl;
@@ -596,6 +623,25 @@ void HotelManager::PrintEntity(const DataSet ds)
     }
 }
 
+void HotelManager::EditData()
+{
+    //TODO Reservation/Room
+    if (clients.empty())
+    {
+        ReadFromCSV(DataSet::Clients);
+    }
+    int id;
+    std::cout << "Wybierz id klienta: ";
+    std::cin >> id;
+
+    auto it = std::find_if(clients.begin(), clients.end(), [&](const Client& client)
+        {
+            return client.getID() == id;
+        });
+    Client& foundClient = *it;
+    EditEntity(foundClient);
+}
+
 void HotelManager::PrintEntityHeading(const Entity& entity)
 {
     entity.PrintHeading();
@@ -604,6 +650,11 @@ void HotelManager::PrintEntityHeading(const Entity& entity)
 void HotelManager::PrintEntityData(const Entity& entity)
 {
     entity.Print();
+}
+
+void HotelManager::EditEntity(Entity& entity)
+{
+    entity.Edit();
 }
 
 void HotelManager::PrintEntityWithFilter(const Entity* entity, std::function<bool(const Entity*)> filter)

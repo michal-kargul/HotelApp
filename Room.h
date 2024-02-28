@@ -23,6 +23,7 @@ public:
 
     virtual void PrintHeading() const override;
     virtual void Print() const override;
+    virtual void Edit() override;
 
 private:
     int roomID;

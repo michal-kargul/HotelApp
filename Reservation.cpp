@@ -69,3 +69,8 @@ void Reservation::Print() const
 {
     std::cout << std::setw(15) << getReservationID() << std::setw(15) << getRoomID() << std::setw(15) << getClientID() << std::setw(15) << getDate() << std::setw(10) << isPaid() << "\n";
 }
+
+void Reservation::Edit()
+{
+    //TODO
+}

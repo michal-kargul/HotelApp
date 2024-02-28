@@ -2,6 +2,15 @@
 #include "Entity.h"
 #include <string>
 
+enum class EditMenu
+{
+    Name = '1',
+    Surname = '2',
+    Email = '3',
+    Phone = '4',
+    Exit = '5',
+};
+
 class Client : public Entity
 {
 public:
@@ -25,6 +34,7 @@ public:
 
     virtual void PrintHeading() const override;
     virtual void Print() const override;
+    virtual void Edit() override;
 
 private:
     int id;

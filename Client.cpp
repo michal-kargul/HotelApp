@@ -63,3 +63,41 @@ void Client::Print() const
 {
     std::cout << std::setw(4) << getID() << std::setw(15) << getName() << std::setw(15) << getSurname() << std::setw(20) << getEmail() << std::setw(15) << getPhoneNumber() << std::setw(15) << getPeselID() << "\n";
 }
+
+void Client::Edit()
+{
+    std::cout << "Co chcialbys zedytowac? 1 - Imie, 2 - Nazwisko, 3 - Email, 4 - Numer telefonu" << std::endl;
+    char c;
+    c = _getch();
+    std::string newData;
+    switch (static_cast<EditMenu>(c))
+    {
+    case EditMenu::Name:
+        std::cout << "Podaj nowe imie: ";
+        std::cin >> newData;
+        setName(newData);
+        std::cout << "Pomyslnie zaktualizowano" << std::endl;
+        break;
+    case EditMenu::Surname:
+        std::cout << "Podaj nowe nazwisko: ";
+        std::cin >> newData;
+        setName(newData);
+        std::cout << "Pomyslnie zaktualizowano" << std::endl;
+        break;
+    case EditMenu::Email:
+        std::cout << "Podaj nowy adres email: ";
+        std::cin >> newData;
+        setName(newData);
+        std::cout << "Pomyslnie zaktualizowano" << std::endl;
+        break;
+    case EditMenu::Phone:
+        std::cout << "Podaj nowy numer telefonu: ";
+        std::cin >> newData;
+        setName(newData);
+        std::cout << "Pomyslnie zaktualizowano" << std::endl;
+        break;
+    case EditMenu::Exit:
+        break;
+    }
+
+}

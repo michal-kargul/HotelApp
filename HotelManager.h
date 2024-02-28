@@ -29,6 +29,8 @@ public:
     void RemoveEntity(const DataSet ds);
     void PrintEntityHeading(const Entity& entity);
     void PrintEntityData(const Entity& entity);
+    void EditData();
+    void EditEntity(Entity& entity);
     void AddReservation();
     void AddReservationFromConsole();
 

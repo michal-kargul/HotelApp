@@ -59,3 +59,8 @@ void Room::Print() const
 {
     std::cout << std::setw(15) << getRoomID() << std::setw(15) << getRoomNumber() << std::setw(10) << getCapacity() << std::setw(15) << getPricePerNight() << std::setw(10) << isAvailable() << "\n";
 }
+
+void Room::Edit()
+{
+    //TODO
+}
