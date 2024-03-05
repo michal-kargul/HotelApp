@@ -9,13 +9,15 @@
 #include <conio.h>
 #include <regex>
 #include <functional>
+#include <map>
 
 
 enum class DataSet
 {
     Clients,
     Rooms,
-    Reservations
+    Reservations,
+    IDs
 };
 
 class HotelManager
@@ -35,17 +37,17 @@ public:
     void AddReservationFromConsole();
 
 private:
+    void SaveToCSV(const DataSet ds);
     void AddClientFromConsole();
-    void SaveClientsToCSV();
     std::vector<Client> clients;
     const std::string filenameClient = "clients.csv";
     void AddRoomFromConsole();
-    void SaveRoomsToCSV();
-    void SaveReservationsToCSV();
     std::vector<Room> rooms;
+    const std::string filenameIDs = "ids.csv";
     const std::string filenameRoom = "rooms.csv";
     const std::string filenameReservation = "reservations.csv";
     std::vector<Reservation> reservations;
+    std::map<std::string, int> ids;
     void RemoveRoom(int id);
     void RemoveClient(int id);
     void RemoveReservation(int id);

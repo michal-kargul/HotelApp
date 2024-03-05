@@ -64,5 +64,8 @@
     <None Include="reservations.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ids.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

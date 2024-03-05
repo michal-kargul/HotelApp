@@ -66,7 +66,12 @@ void Client::Print() const
 
 void Client::Edit()
 {
-    std::cout << "Co chcialbys zedytowac? 1 - Imie, 2 - Nazwisko, 3 - Email, 4 - Numer telefonu" << std::endl;
+    std::cout << "Co chcialbys zedytowac? ";
+
+    for (const auto& [key, value] : menuOptions)
+        std::cout << static_cast<char>(key) << " - " << value << ", ";
+    std::cout << std::endl;
+
     char c;
     c = _getch();
     std::string newData;

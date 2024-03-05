@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include <string>
+#include <map>
 
 enum class EditMenu
 {
@@ -43,4 +44,12 @@ private:
     std::string email;
     std::string phoneNumber;
     std::string peselID;
+    std::map<EditMenu, std::string> menuOptions =
+    {
+        {EditMenu::Name, "Imie"},
+        {EditMenu::Surname, "Nazwisko"},
+        {EditMenu::Email, "Email"},
+        {EditMenu::Phone, "Numer telefonu"},
+        {EditMenu::Exit, "Wyjscie"},
+    };
 };

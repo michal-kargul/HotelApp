@@ -13,7 +13,8 @@ void HotelManager::AddClient()
         std::cout << std::endl;
     } while (c != 'n');
 
-    SaveClientsToCSV();
+    SaveToCSV(DataSet::Clients);
+    SaveToCSV(DataSet::IDs);
 }
 
 void HotelManager::AddClientFromConsole()
@@ -27,22 +28,10 @@ void HotelManager::AddClientFromConsole()
     std::string peselID;
     char c;
 
-    do
-    {
-        if (clients.empty() && i == 0)
-        {
-            ReadFromCSV(DataSet::Clients);
-        }
-        else if (clients.empty() && i != 0)
-        {
-            id = 1;
-        }
-        else {
-            const auto& lastClient = clients.back();
-            id = lastClient.getID() + 1;
-        }
-        ++i;
-    } while (i == 1);
+    ReadFromCSV(DataSet::Clients);
+    ReadFromCSV(DataSet::IDs);
+
+    id = ++ids["Client"];
 
     std::cout << "Podaj imie klienta: ";
     std::getline(std::cin, name);
@@ -83,29 +72,8 @@ void HotelManager::AddClientFromConsole()
     
     Client newClient(id, name, surname, email, phoneNumber, peselID);
     clients.push_back(newClient);
+    ids["Client"] = id;
 }
-
-void HotelManager::SaveClientsToCSV()
-{
-    
-    std::ofstream file(filenameClient, std::ios::ate);
-
-    if (file.is_open())
-    {
-        for (const auto& client : clients)
-        {
-            file << client.getID() << "," << client.getName() << "," << client.getSurname() << "," << client.getEmail() << "," << client.getPhoneNumber() << "," << client.getPeselID() << "\n";
-        }
-        file.close();
-        std::cout << "Clients data added to " << filenameClient << std::endl;
-        clients.clear();
-    }
-    else
-    {
-        std::cerr << "Error while opening file: " << filenameClient << std::endl;
-    }
-}
-
 
 void HotelManager::ReadFromCSV(const DataSet ds)
 {
@@ -124,6 +92,10 @@ void HotelManager::ReadFromCSV(const DataSet ds)
     case DataSet::Reservations:
         fileName = filenameReservation;
         reservations.clear();
+        break;
+    case DataSet::IDs:
+        fileName = filenameIDs;
+        ids.clear();
         break;
     default:
         std::cerr << "Zly parametr dla RemoveEntity";
@@ -157,8 +129,11 @@ void HotelManager::ReadFromCSV(const DataSet ds)
             case DataSet::Reservations:
                 reservations.emplace_back(stoi(cells[0]), stoi(cells[1]), stoi(cells[2]), std::stoi(cells[3]), cells[4] == "1", cells[5] == "1");
                 break;
+            case DataSet::IDs:
+                ids.insert({ cells[0],stoi(cells[1]) });
+                break;
             default:
-                std::cerr << "Zly parametr dla RemoveEntity";
+                std::cerr << "Zly parametr dla ReadFromCSV";
                 break;
             }          
         }
@@ -169,6 +144,72 @@ void HotelManager::ReadFromCSV(const DataSet ds)
         std::cerr << "Error while opening file: " << filenameClient << std::endl;
     }
 
+}
+
+void HotelManager::SaveToCSV(const DataSet ds)
+{
+    std::string fileName;
+
+    switch (ds)
+    {
+    case DataSet::Clients:
+        fileName = filenameClient;
+        break;
+    case DataSet::Rooms:
+        fileName = filenameRoom;
+        break;
+    case DataSet::Reservations:
+        fileName = filenameReservation;
+        break;
+    case DataSet::IDs:
+        fileName = filenameIDs;
+        break;
+    default:
+        std::cerr << "Zly parametr dla SaveToCSV";
+        break;
+    }
+
+    std::ofstream file(fileName, std::ios::ate);
+
+    if (file.is_open())
+    {
+        switch (ds)
+        {
+        case DataSet::Clients:
+            for (const auto& client : clients)
+            {
+                file << client.getID() << "," << client.getName() << "," << client.getSurname() << "," << client.getEmail() << "," << client.getPhoneNumber() << "," << client.getPeselID() << "\n";
+            }
+            break;
+        case DataSet::Rooms:
+            for (const auto& room : rooms)
+            {
+                file << room.getRoomID() << "," << room.getRoomNumber() << "," << room.getCapacity() << "," << room.getPricePerNight() << "," << room.isAvailable() << "\n";
+            }
+            break;
+        case DataSet::Reservations:
+            for (const auto& reservation : reservations)
+            {
+                file << reservation.getReservationID() << "," << reservation.getRoomID() << "," << reservation.getClientID() << "," << reservation.getDate() << "," << reservation.isPaid() << "," << reservation.getStatus() << "\n";
+            }
+            break;
+        case DataSet::IDs:
+            for (const auto& [key, value] : ids)
+                file << key << "," << value << "\n";
+            break;
+        default:
+            std::cerr << "Zly parametr dla SaveToCSV";
+            break;
+        }
+        
+        file.close();
+        std::cout << "Data added to " << fileName << std::endl;
+        clients.clear();
+    }
+    else
+    {
+        std::cerr << "Error while opening file: " << fileName << std::endl;
+    }
 }
 
 void HotelManager::AddRoom()
@@ -184,9 +225,10 @@ void HotelManager::AddRoom()
         std::cout << std::endl;
     } while (c != 'n');
 
-    SaveRoomsToCSV();
+    SaveToCSV(DataSet::Rooms);
+    SaveToCSV(DataSet::IDs);
 }
-// TODO: Walidacja
+
 void HotelManager::AddRoomFromConsole()
 {
     int id;
@@ -195,7 +237,7 @@ void HotelManager::AddRoomFromConsole()
     int floor;
     int capacity;
     double pricePerNight;
-    bool available;
+    bool available=false;
     char c;
     std::string roomNumber;
 
@@ -205,25 +247,24 @@ void HotelManager::AddRoomFromConsole()
     lastFloorID = 100 * floor;
 
     ReadFromCSV(DataSet::Rooms);
+    ReadFromCSV(DataSet::IDs);
 
-    if (rooms.empty())
-    {
-        id = 1;
-    }
-    else
-    {
-        const auto& lastRoom = rooms.back();
-        id = lastRoom.getRoomID() + 1;
-    }
+    id = ++ids["Room"];
 
     std::cout << "Podaj numer pokoju: ";
     std::cin >> roomNumber;
 
-    std::cout << "Podaj ilosc osob mieszczacych sie w pokoju: ";
-    std::cin >> capacity;
+    do
+    {
+        std::cout << "Podaj ilosc osob mieszczacych sie w pokoju: ";
+        std::cin >> capacity;
+    } while (std::cin.fail());
 
-    std::cout << "Podaj cene za noc: ";
-    std::cin >> pricePerNight;
+    do
+    {
+        std::cout << "Podaj cene za noc: ";
+        std::cin >> pricePerNight;
+    } while (std::cin.fail());
 
     do
     {
@@ -245,27 +286,6 @@ void HotelManager::AddRoomFromConsole()
     rooms.push_back(newRoom);
 }
 
-void HotelManager::SaveRoomsToCSV()
-{
-
-    std::ofstream file(filenameRoom, std::ios::ate);
-
-    if (file.is_open())
-    {
-        for (const auto& room : rooms)
-        {
-            file << room.getRoomID() << "," << room.getRoomNumber() << "," << room.getCapacity() << "," << room.getPricePerNight() << "," << room.isAvailable() << "\n";
-        }
-        file.close();
-        std::cout << "Rooms data added to " << filenameRoom << std::endl;
-        rooms.clear();
-    }
-    else
-    {
-        std::cerr << "Error while opening file: " << filenameRoom << std::endl;
-    }
-}
-
 void HotelManager::AddReservation()
 {
     char c;
@@ -279,7 +299,8 @@ void HotelManager::AddReservation()
         std::cout << std::endl;
     } while (c != 'n');
 
-    SaveReservationsToCSV();
+    SaveToCSV(DataSet::Reservations);
+    SaveToCSV(DataSet::IDs);
 }
 
 void HotelManager::AddReservationFromConsole()
@@ -296,6 +317,7 @@ void HotelManager::AddReservationFromConsole()
     ReadFromCSV(DataSet::Clients);
     ReadFromCSV(DataSet::Rooms);
     ReadFromCSV(DataSet::Reservations);
+    ReadFromCSV(DataSet::IDs);
 
     if (clients.empty())
     {
@@ -307,15 +329,7 @@ void HotelManager::AddReservationFromConsole()
         AddRoom();
     }
 
-    if (reservations.empty())
-    {
-        reservationID = 1;
-    }
-    else
-    {
-        const auto& lastReservation = reservations.back();
-        reservationID = lastReservation.getReservationID() + 1;
-    }
+    reservationID = ++ids["Reservation"];
 
     //TODO walidacja
     std::cout << "Podaj daty rezerwacji, jezeli nie chcesz podawac wiecej - wpisz 0 " << std::endl;
@@ -396,27 +410,6 @@ void HotelManager::AddReservationFromConsole()
 
 }
 
-void HotelManager::SaveReservationsToCSV()
-{
-
-    std::ofstream file(filenameReservation, std::ios::ate);
-
-    if (file.is_open())
-    {
-        for (const auto& reservation : reservations)
-        {
-            file << reservation.getReservationID() << "," << reservation.getRoomID() << "," << reservation.getClientID() << "," << reservation.getDate() << "," << reservation.isPaid() << "," << reservation.getStatus() << "\n";
-        }
-        file.close();
-        std::cout << "Reservations data added to " << filenameReservation << std::endl;
-        reservations.clear();
-    }
-    else
-    {
-        std::cerr << "Error while opening file: " << filenameReservation << std::endl;
-    }
-}
-
 void HotelManager::RemoveEntity(const DataSet ds)
 {
     int id;
@@ -445,7 +438,7 @@ void HotelManager::RemoveEntity(const DataSet ds)
             {
                 ReadFromCSV(DataSet::Reservations);
             }
-            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
+            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const auto& reservation) {
                 if (reservation.getClientID() == id)
                 {
                     std::cout << "Rezerwacja o id:" << reservation.getReservationID() << " zostanie usunieta" << std::endl;
@@ -462,9 +455,9 @@ void HotelManager::RemoveEntity(const DataSet ds)
 
             if (c == 'y')
             {
-                SaveReservationsToCSV();
+                SaveToCSV(DataSet::Reservations);
             }
-            SaveRoomsToCSV();
+            SaveToCSV(DataSet::Rooms);
         }
         break;
     case DataSet::Rooms:
@@ -488,7 +481,7 @@ void HotelManager::RemoveEntity(const DataSet ds)
             {
                 ReadFromCSV(DataSet::Reservations);
             }
-            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const Reservation& reservation) {
+            reservations.erase(std::remove_if(reservations.begin(), reservations.end(), [id](const auto& reservation) {
                 if (reservation.getRoomID() == id)
                 {
                     std::cout << "Rezerwacja o id:" << reservation.getReservationID() << " zostanie usunieta" << std::endl;
@@ -502,9 +495,9 @@ void HotelManager::RemoveEntity(const DataSet ds)
             } while (c != 'n' && c != 'y');
             if (c == 'y')
             {
-                SaveReservationsToCSV();
+                SaveToCSV(DataSet::Reservations);
             }
-            SaveRoomsToCSV();
+            SaveToCSV(DataSet::Rooms);
         }
         break;
     case DataSet::Reservations:
@@ -522,6 +515,7 @@ void HotelManager::RemoveEntity(const DataSet ds)
         break;
     }
 }
+
 void HotelManager::RemoveClient(const int id)
 {
     auto sizeBeforeRemoval = clients.size();
@@ -634,7 +628,7 @@ void HotelManager::EditData()
     std::cout << "Wybierz id klienta: ";
     std::cin >> id;
 
-    auto it = std::find_if(clients.begin(), clients.end(), [&](const Client& client)
+    auto it = std::find_if(clients.begin(), clients.end(), [&](const auto& client)
         {
             return client.getID() == id;
         });
