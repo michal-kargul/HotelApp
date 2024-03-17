@@ -13,7 +13,7 @@ Menu::Menu()
         {MenuOption::RemoveClient, "Usun Klienta"},
         {MenuOption::RemoveRoom, "Usun Pokoj"},
         {MenuOption::EditData, "Edytuj Dane"},
-        {MenuOption::Stop, "Wyjdz"}
+        {MenuOption::Stop, "Wyjdz"},
     };
 }
 
@@ -57,7 +57,6 @@ MenuOption Menu::GetUserInput()
     system("cls");
     return static_cast<MenuOption>(selected);
 }
-//test
 void Menu::printMenu(MenuOption selected)
 {
     system("cls");

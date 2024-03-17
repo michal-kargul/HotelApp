@@ -24,6 +24,7 @@ public:
     virtual void PrintHeading() const override;
     virtual void Print() const override;
     virtual void Edit() override;
+    virtual void ProcessData(std::ostream& str) const override;
 
 private:
     int roomID;

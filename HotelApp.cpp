@@ -1,5 +1,7 @@
 #include "Menu.h"
 #include "HotelManager.h"
+#include <thread>
+#include <chrono>
 
 int main() {
 
@@ -53,9 +55,15 @@ int main() {
                 break;
             }
         }
+        catch (const char* e)
+        {
+            std::cerr << "Message: " << e;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
         catch (...)
         {
-            std::cerr << "Blad"; //Musze sie zastanowic jakie bledy moga sie pojawiac - przy wielu walidacjach niestety narazie nie przychodzi mi nic do glowy.
+            std::cerr << "Error";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
         

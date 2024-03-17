@@ -64,3 +64,8 @@ void Room::Edit()
 {
     //TODO
 }
+
+void Room::ProcessData(std::ostream& str) const
+{
+    str << getRoomID() << "," << getRoomNumber() << "," << getCapacity() << "," << getPricePerNight() << "," << isAvailable() << "\n";
+}

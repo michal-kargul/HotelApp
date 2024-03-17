@@ -74,3 +74,8 @@ void Reservation::Edit()
 {
     //TODO
 }
+
+void Reservation::ProcessData(std::ostream& str) const
+{
+    str << getReservationID() << "," << getRoomID() << "," << getClientID() << "," << getDate() << "," << isPaid() << "," << getStatus() << "\n";
+}

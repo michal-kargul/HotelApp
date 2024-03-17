@@ -5,11 +5,11 @@
 
 enum class EditMenu
 {
-    Name = '1',
-    Surname = '2',
-    Email = '3',
-    Phone = '4',
-    Exit = '5',
+    Name = 1,
+    Surname,
+    Email,
+    Phone,
+    Exit,
 };
 
 class Client : public Entity
@@ -36,6 +36,7 @@ public:
     virtual void PrintHeading() const override;
     virtual void Print() const override;
     virtual void Edit() override;
+    virtual void ProcessData(std::ostream& str) const override;
 
 private:
     int id;
@@ -44,7 +45,7 @@ private:
     std::string email;
     std::string phoneNumber;
     std::string peselID;
-    std::map<EditMenu, std::string> menuOptions =
+    std::map<EditMenu, std::string> editMenuOptions =
     {
         {EditMenu::Name, "Imie"},
         {EditMenu::Surname, "Nazwisko"},

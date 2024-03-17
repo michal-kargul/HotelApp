@@ -68,12 +68,12 @@ void Client::Edit()
 {
     std::cout << "Co chcialbys zedytowac? ";
 
-    for (const auto& [key, value] : menuOptions)
-        std::cout << static_cast<char>(key) << " - " << value << ", ";
+    for (const auto& [key, value] : editMenuOptions)
+        std::cout << static_cast<int>(key) << " - " << value << ", ";
     std::cout << std::endl;
 
-    char c;
-    c = _getch();
+    int c;
+    std::cin >> c;
     std::string newData;
     switch (static_cast<EditMenu>(c))
     {
@@ -105,4 +105,9 @@ void Client::Edit()
         break;
     }
 
+}
+
+void Client::ProcessData(std::ostream& str) const
+{
+    str << getID() << "," << getName() << "," << getSurname() << "," << getEmail() << "," << getPhoneNumber() << "," << getPeselID() << "\n";
 }

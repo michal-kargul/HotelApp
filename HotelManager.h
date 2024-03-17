@@ -17,7 +17,7 @@ enum class DataSet
     Clients,
     Rooms,
     Reservations,
-    IDs
+    IDs,
 };
 
 class HotelManager
