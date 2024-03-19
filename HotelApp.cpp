@@ -5,49 +5,49 @@
 
 int main() {
 
-    Menu m1;
+    Menu m1(MenuType::Main);
 
     bool exit = false;
 
     HotelManager hotel;
-
+    
     do
     {
         try
         {
-            switch (m1.GetUserInput())
+            switch (m1.GetUserInput<MainMenuOption>())
             {
-            case MenuOption::Rooms:
+            case MainMenuOption::Rooms:
                 hotel.PrintEntity(DataSet::Rooms);
                 system("pause");
                 break;
-            case MenuOption::Clients:
+            case MainMenuOption::Clients:
                 hotel.PrintEntity(DataSet::Clients);
                 system("pause");
                 break;
-            case MenuOption::Reservations:
+            case MainMenuOption::Reservations:
                 hotel.PrintEntity(DataSet::Reservations);
                 system("pause");
                 break;
-            case MenuOption::Book:
+            case MainMenuOption::Book:
                 hotel.AddReservation();
                 break;
-            case MenuOption::AddClient:
+            case MainMenuOption::AddClient:
                 hotel.AddClient();
                 break;
-            case MenuOption::AddRoom:
+            case MainMenuOption::AddRoom:
                 hotel.AddRoom();
                 break;
-            case MenuOption::RemoveClient:
+            case MainMenuOption::RemoveClient:
                 hotel.RemoveEntity(DataSet::Rooms);
                 break;
-            case MenuOption::RemoveRoom:
+            case MainMenuOption::RemoveRoom:
                 hotel.RemoveEntity(DataSet::Rooms);
                 break;
-            case MenuOption::EditData:
+            case MainMenuOption::EditData:
                 hotel.EditData();
                 break;
-            case MenuOption::Stop:
+            case MainMenuOption::Stop:
                 exit = true;
                 break;
             default:
