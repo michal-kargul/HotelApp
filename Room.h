@@ -21,10 +21,10 @@ public:
     const bool isAvailable() const;
     void setAvailability(bool available);
 
-    virtual void PrintHeading() const override;
-    virtual void Print() const override;
-    virtual void Edit() override;
-    virtual void ProcessData(std::ostream& str) const override;
+    void PrintHeading() const final;
+    void Print() const final;
+    void Edit() final;
+    void ProcessData(std::ostream& str) const final;
 
 private:
     int roomID;

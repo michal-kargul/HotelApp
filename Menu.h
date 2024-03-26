@@ -55,7 +55,7 @@ private:
     bool updated = false;
     template<typename T>
     void printMenu(T selected, Language lang);
-    int* mapPtr = nullptr;
+    void* mapPtr = nullptr;
     size_t mapSize;
     
     std::map<MainMenuOption, std::map<Language, std::string>> mainMenuMap =

@@ -98,7 +98,7 @@ void HotelManager::ReadFromCSV(const DataSet ds)
         ids.clear();
         break;
     default:
-        throw "Zly parametr dla RemoveEntity";
+        throw std::string("Zly parametr dla RemoveEntity");
         break;
     }
 
@@ -133,7 +133,7 @@ void HotelManager::ReadFromCSV(const DataSet ds)
                 ids.insert({ cells[0],stoi(cells[1]) });
                 break;
             default:
-                throw "Zly parametr dla ReadFromCSV";
+                throw std::string("Zly parametr dla ReadFromCSV");
                 break;
             }          
         }
@@ -141,7 +141,7 @@ void HotelManager::ReadFromCSV(const DataSet ds)
     }
     else
     {
-        throw "Error while opening file: ";
+        throw std::string("Error while opening file: ");
     }
 
 }
@@ -165,7 +165,7 @@ void HotelManager::SaveToCSV(const DataSet ds)
         fileName = filenameIDs;
         break;
     default:
-        throw "Zly parametr dla SaveToCSV";
+        throw std::string("Zly parametr dla SaveToCSV");
         break;
     }
 
@@ -198,7 +198,7 @@ void HotelManager::SaveToCSV(const DataSet ds)
                 file << key << "," << value << "\n";
             break;
         default:
-            throw "Zly parametr dla SaveToCSV";
+            throw std::string("Zly parametr dla SaveToCSV");
             break;
         }
         
@@ -208,7 +208,7 @@ void HotelManager::SaveToCSV(const DataSet ds)
     }
     else
     {
-        throw "Error while opening file: ";
+        throw std::string("Error while opening file: ");
     }
 }
 
@@ -511,7 +511,7 @@ void HotelManager::RemoveEntity(const DataSet ds)
         RemoveReservation(id);
         break;
     default:
-        throw "Zly parametr dla RemoveEntity";
+        throw std::string("Zly parametr dla RemoveEntity");
         break;
     }
 }
@@ -530,7 +530,7 @@ void HotelManager::RemoveClient(const int id)
         std::cout << "Klient " << id << " zostal usuniety." << std::endl;
     }
     else {
-        throw "Nie znaleziono klienta z podanym id ";
+        throw std::string("Nie znaleziono klienta z podanym id ");
     }
 }
 
@@ -548,7 +548,7 @@ void HotelManager::RemoveRoom(const int id)
         std::cout << "Pokoj " << id << " zostal usuniety." << std::endl;
     }
     else {
-        throw "Nie znaleziono pokoju z podanym id ";
+        throw std::string("Nie znaleziono pokoju z podanym id ");
     }
 }
 
@@ -566,7 +566,7 @@ void HotelManager::RemoveReservation(const int id)
         std::cout << "Rezerwacja " << id << " zostala usunieta." << std::endl;
     }
     else {
-        throw "Nie znaleziono rezerwacji z podanym id ";
+        throw std::string("Nie znaleziono rezerwacji z podanym id ");
     }
 }
 
@@ -612,7 +612,7 @@ void HotelManager::PrintEntity(const DataSet ds)
         }
         break;
     default:
-        throw "Wrong attribute for PrintEntity()";
+        throw std::string("Wrong attribute for PrintEntity()");
         break;
     }
 }

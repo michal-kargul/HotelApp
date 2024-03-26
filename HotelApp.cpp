@@ -55,7 +55,7 @@ int main() {
                 break;
             }
         }
-        catch (const char* e)
+        catch (const std::string e)
         {
             std::cerr << "Message: " << e;
             std::this_thread::sleep_for(std::chrono::seconds(1));
