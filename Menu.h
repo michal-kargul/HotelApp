@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Menus.h"
 #include <iostream>
 #include <string>
 #include <map>
@@ -9,83 +10,37 @@
 #define KEY_DOWN 80
 #define KEY_ENTER '\r'
 
-enum class MenuType
-{
-    Main,
-    Decision,
-};
-
-enum class Language
-{
-    EN,
-    PL,
-};
-
-enum MainMenuOption
-{
-    Rooms,
-    Clients,
-    Reservations,
-    Book,
-    AddClient,
-    AddRoom,
-    RemoveClient,
-    RemoveRoom,
-    EditData,
-    Stop,
-};
-
-enum class Decision
-{
-    Yes,
-    No,
-};
-
+template<typename T>
 class Menu
 {
 public:
-    Menu(MenuType mt);
+    Menu(std::map<T, std::map<Language, std::string>>& menuMap, Language language);
 
-    template<typename T>
     T GetUserInput();
 
 private:
-    MenuType mt;
+    std::map<T, std::map<Language, std::string>> menuMap;
+    size_t mapSize;
     bool selecting = true;
     bool updated = false;
-    template<typename T>
-    void printMenu(T selected, Language lang);
-    void* mapPtr = nullptr;
-    size_t mapSize;
-    
-    std::map<MainMenuOption, std::map<Language, std::string>> mainMenuMap =
-    {
-        {MainMenuOption::Rooms,         {{Language::EN, "Rooms"},           {Language::PL, "Pokoje"}}},
-        {MainMenuOption::Clients,       {{Language::EN, "Clients"},         {Language::PL, "Klienci"}}},
-        {MainMenuOption::Reservations,  {{Language::EN, "Reservations"},    {Language::PL, "Rezerwacje"}}},
-        {MainMenuOption::Book,          {{Language::EN, "Book"},            {Language::PL, "Rezerwuj"}}},
-        {MainMenuOption::AddClient,     {{Language::EN, "Add Client"},      {Language::PL, "Dodaj Klienta"}}},
-        {MainMenuOption::AddRoom,       {{Language::EN, "Add Room"},        {Language::PL, "Dodaj Pokoj"}}},
-        {MainMenuOption::RemoveClient,  {{Language::EN, "Remove Client"},   {Language::PL, "Usun Klienta"}}},
-        {MainMenuOption::RemoveRoom,    {{Language::EN, "Remove Room"},     {Language::PL, "Usun Pokoj"}}},
-        {MainMenuOption::EditData,      {{Language::EN, "Edit Data"},       {Language::PL, "Edytuj Dane"}}},
-        {MainMenuOption::Stop,          {{Language::EN, "Exit"},            {Language::PL, "Wyjdz"}}},
-    };
-    std::map<Decision, std::map<Language, std::string>> decisionMenuMap =
-    {
-        {Decision::Yes,     {{Language::EN, "Yes"},     {Language::PL, "Tak"}}},
-        {Decision::No,      {{Language::EN, "No"},      {Language::PL, "Nie"}}},
-    };
+    Language lang;
 
+    void printMenu(T selected);
 };
 
 template<typename T>
-T Menu::GetUserInput()
+Menu<T>::Menu(std::map<T, std::map<Language, std::string>>& menuMap, Language language) : menuMap(menuMap), lang(language)
+{
+    mapSize = menuMap.size();
+}
+
+template<typename T>
+T Menu<T>::GetUserInput()
 {
     using EnumType = std::underlying_type_t<T>;
     EnumType selected = static_cast<EnumType>(0);
 
-    printMenu(selected, Language::EN);
+    printMenu(static_cast<T>(selected));
 
     selecting = true;
 
@@ -115,8 +70,9 @@ T Menu::GetUserInput()
             break;
         default: break;
         }
-        if (updated) {
-            printMenu(selected, Language::EN);
+        if (updated)
+        {
+            printMenu(static_cast<T>(selected));
             updated = false;
         }
     }
@@ -125,22 +81,20 @@ T Menu::GetUserInput()
 }
 
 template<typename T>
-void Menu::printMenu(T selected, Language lang)
+void Menu<T>::printMenu(T selected)
 {
-    auto& menuMap = *reinterpret_cast<std::map<T, std::map<Language, std::string>>*>(mapPtr);
-
     system("cls");
     for (const auto& pair : menuMap)
     {
-        if (selected == static_cast<int>(pair.first))
+        if (selected == pair.first)
         {
             std::cout << "--> ";
-            std::cout << pair.first + 1 << ". " << pair.second.at(lang) << std::endl;
+            std::cout << static_cast<int>(pair.first) + 1 << ". " << pair.second.at(lang) << std::endl;
         }
         else
         {
             std::cout << "    ";
-            std::cout << pair.first + 1 << ". " << pair.second.at(lang) << std::endl;
+            std::cout << static_cast<int>(pair.first) + 1 << ". " << pair.second.at(lang) << std::endl;
         }
     }
 }

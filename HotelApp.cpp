@@ -1,3 +1,4 @@
+#include "Menus.h"
 #include "Menu.h"
 #include "HotelManager.h"
 #include <thread>
@@ -5,7 +6,7 @@
 
 int main() {
 
-    Menu m1(MenuType::Main);
+    Menu <MainMenuOption> m1(mainMenuMap, Language::PL);
 
     bool exit = false;
 
@@ -15,7 +16,7 @@ int main() {
     {
         try
         {
-            switch (m1.GetUserInput<MainMenuOption>())
+            switch (m1.GetUserInput())
             {
             case MainMenuOption::Rooms:
                 hotel.PrintEntity(DataSet::Rooms);
