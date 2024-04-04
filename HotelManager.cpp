@@ -636,6 +636,52 @@ void HotelManager::EditData()
     EditEntity(foundClient);
 }
 
+void HotelManager::GetStats()
+{
+    int availableRooms = std::ranges::count_if(rooms, [](const Room& room) {
+        return room.isAvailable();
+        });
+
+    int clientsCounter = std::ranges::distance(clients);
+
+    std::unordered_set<int> uniqueReservationIds;
+
+    for (const auto& reservation : reservations)
+    {
+        uniqueReservationIds.insert(reservation.getReservationID());
+    }
+
+    std::cout << "Liczba Pokoi, ktore mozna wynajac: " << availableRooms << std::endl;
+    
+    std::cout << "Liczba Klientow: " << clientsCounter << std::endl;
+
+    std::cout << "Liczba Rezerwacji: " << uniqueReservationIds.size() << std::endl;
+}
+
+void HotelManager::GetClientDataPerRoom()
+{
+    int roomID;
+    std::cout << "Podaj id pokoju, aby pokazac kto w nim mieszkal: ";
+    std::cin >> roomID;
+
+    std::vector<Client> filteredClients;
+    for (const auto& client : clients)
+    {
+        if (std::ranges::any_of(reservations, [&](const auto& reservation){
+            return reservation.getRoomID() == roomID && reservation.getClientID() == client.getID();
+            }))
+        {
+            filteredClients.push_back(client);
+        }
+    }
+
+    for (auto& filClient : filteredClients)
+    {
+        PrintEntityData(filClient);
+    }
+    std::cin >> roomID;
+}
+
 void HotelManager::PrintEntityHeading(const Entity& entity)
 {
     entity.PrintHeading();

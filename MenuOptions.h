@@ -2,20 +2,15 @@
 #include <map>
 #include <string>
 
-enum class MenuType
-{
-    Main,
-    Decision,
-};
-
 enum class Language
 {
     EN,
     PL,
 };
 
-enum MainMenuOption
+enum MenuOption
 {
+    //mainMenu
     Rooms,
     Clients,
     Reservations,
@@ -25,14 +20,13 @@ enum MainMenuOption
     RemoveClient,
     RemoveRoom,
     EditData,
+    Stats,
+    GetClientRoom,
     Stop,
-};
-
-enum class Decision
-{
+    //decisionMenu
     Yes,
     No,
 };
 
-extern std::map<MainMenuOption, std::map<Language, std::string>> mainMenuMap;
-extern std::map<Decision, std::map<Language, std::string>> decisionMenuMap;
+extern std::map<MenuOption, std::map<Language, std::string>> mainMenuMap;
+extern std::map<MenuOption, std::map<Language, std::string>> decisionMenuMap;

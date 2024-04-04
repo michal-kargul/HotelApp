@@ -1,4 +1,4 @@
-#include "Menus.h"
+#include "MenuOptions.h"
 #include "Menu.h"
 #include "HotelManager.h"
 #include <thread>
@@ -6,7 +6,7 @@
 
 int main() {
 
-    Menu <MainMenuOption> m1(mainMenuMap, Language::PL);
+    Menu m1(mainMenuMap, Language::PL);
 
     bool exit = false;
 
@@ -18,37 +18,43 @@ int main() {
         {
             switch (m1.GetUserInput())
             {
-            case MainMenuOption::Rooms:
+            case MenuOption::Rooms:
                 hotel.PrintEntity(DataSet::Rooms);
                 system("pause");
                 break;
-            case MainMenuOption::Clients:
+            case MenuOption::Clients:
                 hotel.PrintEntity(DataSet::Clients);
                 system("pause");
                 break;
-            case MainMenuOption::Reservations:
+            case MenuOption::Reservations:
                 hotel.PrintEntity(DataSet::Reservations);
                 system("pause");
                 break;
-            case MainMenuOption::Book:
+            case MenuOption::Book:
                 hotel.AddReservation();
                 break;
-            case MainMenuOption::AddClient:
+            case MenuOption::AddClient:
                 hotel.AddClient();
                 break;
-            case MainMenuOption::AddRoom:
+            case MenuOption::AddRoom:
                 hotel.AddRoom();
                 break;
-            case MainMenuOption::RemoveClient:
+            case MenuOption::RemoveClient:
                 hotel.RemoveEntity(DataSet::Rooms);
                 break;
-            case MainMenuOption::RemoveRoom:
+            case MenuOption::RemoveRoom:
                 hotel.RemoveEntity(DataSet::Rooms);
                 break;
-            case MainMenuOption::EditData:
+            case MenuOption::EditData:
                 hotel.EditData();
                 break;
-            case MainMenuOption::Stop:
+            case MenuOption::Stats:
+                hotel.GetStats();
+                break;
+            case MenuOption::GetClientRoom:
+                hotel.GetClientDataPerRoom();
+                break;
+            case MenuOption::Stop:
                 exit = true;
                 break;
             default:

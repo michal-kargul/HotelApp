@@ -10,6 +10,9 @@
 #include <regex>
 #include <functional>
 #include <map>
+#include <ranges>
+#include <unordered_set>
+#include <algorithm>
 
 
 enum class DataSet
@@ -35,6 +38,8 @@ public:
     void EditEntity(Entity& entity);
     void AddReservation();
     void AddReservationFromConsole();
+    void GetStats();
+    void GetClientDataPerRoom();
 
 private:
     void SaveToCSV(const DataSet ds);

@@ -33,7 +33,7 @@
     <ClCompile Include="Reservation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Menus.cpp">
+    <ClCompile Include="MenuOptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menus.h">
+    <ClInclude Include="MenuOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
