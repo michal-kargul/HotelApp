@@ -7,6 +7,7 @@
 int main() {
 
     Menu m1(mainMenuMap, Language::PL);
+    Menu parking(parkingMenuMap, Language::PL);
 
     bool exit = false;
 
@@ -53,6 +54,14 @@ int main() {
                 break;
             case MenuOption::GetClientRoom:
                 hotel.GetClientDataPerRoom();
+                break;
+            case MenuOption::ParkVehicle:
+                hotel.ParkVehicle();
+                break;
+            case MenuOption::RemoveVehicle:
+                hotel.UnparkVehicle();
+                break;
+            case MenuOption::ParkedVehicles:
                 break;
             case MenuOption::Stop:
                 exit = true;

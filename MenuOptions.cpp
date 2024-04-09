@@ -13,6 +13,9 @@ std::map<MenuOption, std::map<Language, std::string>> mainMenuMap =
     {MenuOption::EditData,      {{Language::EN, "Edit Data"},            {Language::PL, "Edytuj Dane"}}},
     {MenuOption::Stats,         {{Language::EN, "Statistics"},           {Language::PL, "Statystyki"}}},
     {MenuOption::GetClientRoom, {{Language::EN, "Check Room History"},   {Language::PL, "Sprawdz historie pokoju"}}},
+    {MenuOption::ParkVehicle,   {{Language::EN, "Park Vehicle"},         {Language::PL, "Zaparkuj Pojazd"}}},
+    {MenuOption::RemoveVehicle, {{Language::EN, "Remove Vehicle"},       {Language::PL, "Usun Pojazd"}}},
+    {MenuOption::ParkedVehicles,{{Language::EN, "List of Vehicles"},     {Language::PL, "Lista zaparkowanych pojazdow"}}},
     {MenuOption::Stop,          {{Language::EN, "Exit"},                 {Language::PL, "Wyjdz"}}},
 };
 
@@ -20,4 +23,11 @@ std::map<MenuOption, std::map<Language, std::string>> decisionMenuMap =
 {
     {MenuOption::Yes,     {{Language::EN, "Yes"},     {Language::PL, "Tak"}}},
     {MenuOption::No,      {{Language::EN, "No"},      {Language::PL, "Nie"}}},
+};
+
+std::map<MenuOption, std::map<Language, std::string>> parkingMenuMap =
+{
+    {MenuOption::ParkVehicle,     {{Language::EN, "Park Vehicle"},     {Language::PL, "Zaparkuj Pojazd"}}},
+    {MenuOption::RemoveVehicle,   {{Language::EN, "Remove Vehicle"},   {Language::PL, "Usun Pojazd"}}},
+    {MenuOption::ParkedVehicles,  {{Language::EN, "List of Vehicles"}, {Language::PL, "Lista zaparkowanych pojazdow"}}},
 };

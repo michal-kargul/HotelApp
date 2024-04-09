@@ -1,6 +1,8 @@
 #include "Room.h"
 #include "Client.h"
 #include "Reservation.h"
+#include "Vehicle.h"
+#include "Parking.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -40,8 +42,12 @@ public:
     void AddReservationFromConsole();
     void GetStats();
     void GetClientDataPerRoom();
+    void ParkVehicle();
+    void UnparkVehicle();
+    void ShowParkedVehicles();
 
 private:
+    Parking hotelParking;
     void SaveToCSV(const DataSet ds);
     void AddClientFromConsole();
     std::vector<Client> clients;
@@ -52,6 +58,7 @@ private:
     const std::string filenameRoom = "rooms.csv";
     const std::string filenameReservation = "reservations.csv";
     std::vector<Reservation> reservations;
+    std::vector<Vehicle> vehicles;
     std::map<std::string, int> ids;
     void RemoveRoom(int id);
     void RemoveClient(int id);

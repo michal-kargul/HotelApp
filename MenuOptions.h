@@ -22,11 +22,16 @@ enum MenuOption
     EditData,
     Stats,
     GetClientRoom,
+    ParkVehicle,
+    RemoveVehicle,
+    ParkedVehicles,
     Stop,
     //decisionMenu
     Yes,
     No,
+    
 };
 
 extern std::map<MenuOption, std::map<Language, std::string>> mainMenuMap;
 extern std::map<MenuOption, std::map<Language, std::string>> decisionMenuMap;
+extern std::map<MenuOption, std::map<Language, std::string>> parkingMenuMap;

@@ -133,8 +133,10 @@
     <ClCompile Include="HotelManager.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuOptions.cpp" />
+    <ClCompile Include="Parking.cpp" />
     <ClCompile Include="Reservation.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
@@ -142,8 +144,10 @@
     <ClInclude Include="HotelManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuOptions.h" />
+    <ClInclude Include="Parking.h" />
     <ClInclude Include="Reservation.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="Vehicle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="clients.csv" />

@@ -638,7 +638,7 @@ void HotelManager::EditData()
 
 void HotelManager::GetStats()
 {
-    int availableRooms = std::ranges::count_if(rooms, [](const Room& room) {
+    auto availableRooms = std::ranges::count_if(rooms, [](const Room& room) {
         return room.isAvailable();
         });
 
@@ -675,11 +675,42 @@ void HotelManager::GetClientDataPerRoom()
         }
     }
 
-    for (auto& filClient : filteredClients)
+    for (const auto& filteredClient : filteredClients)
     {
-        PrintEntityData(filClient);
+        PrintEntityData(filteredClient);
     }
     std::cin >> roomID;
+}
+
+void HotelManager::ParkVehicle()
+{
+    std::string licPlateNumber;
+    std::cout << "Podaj numer rejestracyjny pojazdu" << std::endl;
+    std::cin >> licPlateNumber;
+
+    Vehicle newVehicle(licPlateNumber);
+    vehicles.push_back(newVehicle);
+
+    hotelParking.Park(newVehicle);
+    hotelParking.DisplayParkedVehicles();
+    std::cin >> licPlateNumber;
+}
+
+void HotelManager::UnparkVehicle()
+{
+    hotelParking.DisplayParkedVehicles();
+    std::string licPlateNumber;
+    std::cout << "Podaj numer rejestracyjny pojazdu" << std::endl;
+    std::cin >> licPlateNumber;
+
+    hotelParking.Unpark(licPlateNumber);
+    
+    std::cin >> licPlateNumber;
+}
+
+void HotelManager::ShowParkedVehicles()
+{
+    hotelParking.DisplayParkedVehicles();
 }
 
 void HotelManager::PrintEntityHeading(const Entity& entity)
